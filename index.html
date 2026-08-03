@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unique Barber — Elbasan</title>
+<meta name="description" content="Unique Barber, Elbasan — berber shop modern. Prerje, fade dhe rregullim mjekre. Rezervo online, paguaj në barbërhanë.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand">
+      <span class="brand-mark">✂️</span>
+      <span class="brand-name">Unique <em>Barber</em></span>
+    </div>
+    <nav class="main-nav">
+      <a href="#sherbimet">Shërbimet</a>
+      <a href="#berberet">Berberët</a>
+      <a href="#rezervo">Rezervo</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+    <a href="#rezervo" class="btn btn-primary nav-cta">Rezervo Termin</a>
+  </div>
+  <div class="barber-pole"></div>
+</header>
+
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div id="hero-photo" class="hero-photo"></div>
+  <div class="container hero-content">
+    <p class="eyebrow">Elbasan · Rruga Lef Nosi</p>
+    <h1>Stil, korrektësi<br>&amp; shërbim cilësor.</h1>
+    <p class="hero-sub">Prerje profesionale, fade perfekt dhe rregullim mjekre me standard të lartë higjiene.</p>
+    <div class="hero-actions">
+      <a href="#rezervo" class="btn btn-primary">Rezervo Online</a>
+      <a id="hero-call" href="tel:+355000000000" class="btn btn-ghost">📞 Na Telefono</a>
+    </div>
+    <div class="hero-hours">
+      <span class="dot"></span>
+      <span id="open-status">Duke kontrolluar orarin…</span>
+    </div>
+  </div>
+</section>
+
+<section id="sherbimet" class="section services-section">
+  <div class="container">
+    <h2 class="section-title">Shërbimet</h2>
+    <p class="section-sub">Çmimet paguhen në barbërhanë, në para dorë. Zgjidh shërbimin kur bën rezervimin.</p>
+    <div id="services-grid" class="services-grid"></div>
+  </div>
+</section>
+
+<section id="berberet" class="section barbers-section">
+  <div class="container">
+    <h2 class="section-title">Berberët Tanë</h2>
+    <div id="barbers-grid" class="barbers-grid"></div>
+  </div>
+</section>
+
+<section id="rezervo" class="section booking-section">
+  <div class="container">
+    <h2 class="section-title">Rezervo Termin</h2>
+    <p class="section-sub">Zgjidh shërbimin, berberin, datën dhe orën. Do të konfirmojmë rezervimin — pagesa bëhet në barbërhanë.</p>
+
+    <div class="booking-mode-toggle">
+      <button id="barber-mode-btn" type="button" class="mode-link">Jam berber — dua të bllokoj një orë</button>
+    </div>
+
+    <div id="booking-card" class="booking-card">
+
+      <div class="booking-step" data-step="service">
+        <h3><span class="step-num">1</span> Shërbimi</h3>
+        <div id="service-options" class="option-grid"></div>
+      </div>
+
+      <div class="booking-step" data-step="barber">
+        <h3><span class="step-num">2</span> Berberi</h3>
+        <div id="barber-options" class="option-grid"></div>
+      </div>
+
+      <div class="booking-step" data-step="date">
+        <h3><span class="step-num">3</span> Data</h3>
+        <input type="date" id="booking-date" class="date-input">
+      </div>
+
+      <div class="booking-step" data-step="time">
+        <h3><span class="step-num">4</span> Ora</h3>
+        <div id="time-slots" class="time-grid">
+          <p class="hint-text">Zgjidh një datë për të parë orët e lira.</p>
+        </div>
+      </div>
+
+      <div class="booking-step" data-step="details">
+        <h3><span class="step-num">5</span> Të dhënat e tua</h3>
+        <div class="form-row">
+          <input type="text" id="customer-name" placeholder="Emri e Mbiemri" autocomplete="name">
+          <input type="tel" id="customer-phone" placeholder="Numri i telefonit" autocomplete="tel">
+        </div>
+      </div>
+
+      <div id="booking-feedback" class="booking-feedback" role="status"></div>
+
+      <button id="submit-booking" type="button" class="btn btn-primary btn-block">Konfirmo Rezervimin</button>
+      <p class="pay-note">💵 Pagesa bëhet në barbërhanë, kur vjen për termin.</p>
+    </div>
+
+    <div id="barber-pin-gate" class="barber-pin-gate hidden">
+      <p>Vendos PIN-in për të bllokuar/zhbllokuar orë:</p>
+      <div class="form-row">
+        <input type="password" id="barber-pin-input" placeholder="PIN" inputmode="numeric">
+        <button id="barber-pin-submit" type="button" class="btn btn-primary">Hyr</button>
+      </div>
+      <p id="barber-pin-error" class="error-text hidden">PIN i gabuar.</p>
+    </div>
+
+  </div>
+</section>
+
+<section class="section gallery-section">
+  <div class="container">
+    <h2 class="section-title">Barbërhanë</h2>
+    <p class="section-sub gallery-placeholder-note" id="gallery-note">
+      Foto të barbërhanës do të shtohen këtu së shpejti.
+    </p>
+    <div id="gallery-grid" class="gallery-grid"></div>
+  </div>
+</section>
+
+<div id="lightbox" class="lightbox hidden">
+  <button id="lightbox-close" type="button" class="lightbox-close" aria-label="Mbyll">✕</button>
+  <button id="lightbox-prev" type="button" class="lightbox-nav lightbox-prev" aria-label="Foto e mëparshme">‹</button>
+  <img id="lightbox-img" class="lightbox-img" alt="">
+  <button id="lightbox-next" type="button" class="lightbox-nav lightbox-next" aria-label="Foto tjetër">›</button>
+</div>
+
+<footer id="kontakt" class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <span class="brand-mark">✂️</span>
+      <span class="brand-name">Unique <em>Barber</em></span>
+    </div>
+    <div class="footer-col">
+      <h4>Kontakt</h4>
+      <p id="footer-address">Rruga Lef Nosi, Elbasan 3001</p>
+      <p><a id="footer-phone" href="tel:+355000000000">069 000 0000</a></p>
+    </div>
+    <div class="footer-col">
+      <h4>Orari</h4>
+      <p>E Hënë, Martë, Enjte – Diel: 09:00 – 21:00</p>
+      <p>Pushim dreke: 14:00 – 16:00</p>
+      <p>E Mërkurë: Mbyllur</p>
+    </div>
+    <div class="footer-col">
+      <h4>Na Ndiqni</h4>
+      <div id="social-links" class="social-links"></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; <span id="footer-year"></span> Unique Barber. Të gjitha të drejtat e rezervuara.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

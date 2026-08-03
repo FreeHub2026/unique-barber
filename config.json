@@ -1,0 +1,36 @@
+{
+  "shopName": "Unique Barber",
+
+  "phoneDisplay": "069 849 1714",
+  "phoneIntl": "355698491714",
+
+  "address": "Rruga Lef Nosi, Elbasan 3001",
+
+  "social": {
+    "instagram": "",
+    "facebook": "",
+    "tiktok": ""
+  },
+
+  "barbers": [
+    { "id": "endri", "name": "Endri", "phone": "" },
+    { "id": "aldo", "name": "Aldo", "phone": "" }
+  ],
+
+  "services": [
+    { "id": "qethje", "name": "Qethje", "price": 400, "duration": 30 },
+    { "id": "qethje-0-forte", "name": "Qethje me 0 të fortë", "price": 500, "duration": 30 }
+  ],
+
+  "hours": {
+    "open": "09:00",
+    "close": "21:00",
+    "lunchStart": "14:00",
+    "lunchEnd": "16:00",
+    "slotMinutes": 30,
+    "closedWeekday": 3
+  },
+
+  "galleryPhotos": [],
+  "heroPhoto": ""
+}
