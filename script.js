@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   CONFIG = await res.json();
 
   renderStaticContent();
+  renderHighlights();
   renderServiceOptions();
   renderProducts();
   renderBarberOptions();
@@ -327,6 +328,20 @@ function updateServiceTotal() {
   });
   const priceText = lo === hi ? `${lo} Lekë` : `${lo}-${hi} Lekë`;
   totalEl.textContent = `${state.services.length} shërbime të zgjedhura — Totali: ${priceText}`;
+}
+
+function renderHighlights() {
+  const grid = document.getElementById("highlights-grid");
+  (CONFIG.highlights || []).forEach(h => {
+    const card = document.createElement("div");
+    card.className = "highlight-card";
+    card.innerHTML = `
+      <div class="highlight-icon">${h.icon}</div>
+      <h3>${h.title}</h3>
+      <p>${h.text}</p>
+    `;
+    grid.appendChild(card);
+  });
 }
 
 function renderProducts() {

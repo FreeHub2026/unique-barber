@@ -17,6 +17,13 @@
     { "id": "aldo", "name": "Aldo", "phone": "" }
   ],
 
+  "highlights": [
+    { "icon": "✂️", "title": "Lineup i Përsosur", "text": "Precizion i pastër në çdo skicim, çdo herë." },
+    { "icon": "💆", "title": "Kujdes për Fytyrën", "text": "Trajtime fytyre që lënë lëkurën të freskët e të pastër." },
+    { "icon": "🧴", "title": "Produkte Premium", "text": "Vetëm xhel, dyll dhe kremra të cilësisë më të lartë." },
+    { "icon": "🏆", "title": "Berberët Më me Përvojë", "text": "Endri & Aldo — stil i vërtetë, jo eksperimente." }
+  ],
+
   "services": [
     { "id": "qethje", "name": "Qethje", "price": 400, "duration": 30 },
     { "id": "qethje-0-forte", "name": "Qethje me 0 të fortë", "price": 500, "duration": 30 },
