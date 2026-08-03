@@ -52,6 +52,7 @@ const I18N = {
     backHome: "Kthehu në Faqen Kryesore",
     pricingServicesHeader: "Shërbimet",
     pricingProductsHeader: "Produktet",
+    seeFullPriceList: "Shiko listën e plotë të çmimeve →",
     productsSub: "Gjenden në barbërhanë — nuk rezervohen online.",
     workPhotosNote: "Foto nga klientët tanë do të shtohen këtu së shpejti.",
     storyTitle: "Historia Jonë",
@@ -142,6 +143,7 @@ const I18N = {
     backHome: "Back to Home",
     pricingServicesHeader: "Services",
     pricingProductsHeader: "Products",
+    seeFullPriceList: "See full price list →",
     productsSub: "Available in-store — not booked online.",
     workPhotosNote: "Photos of our clients' cuts coming soon.",
     storyTitle: "Our Story",
@@ -225,6 +227,7 @@ function setLanguage(lang) {
     renderProducts();
     renderBarberOptions();
     renderPricingList();
+    renderHomePriceGrid();
     renderStory();
     updateServiceTotal();
     updateOpenStatus();
@@ -617,6 +620,22 @@ function renderPricingList() {
     row.className = "price-row";
     row.innerHTML = `<span class="price-row-name">${localized(p, "name")}</span><span class="price-row-value">${p.price} Lekë</span>`;
     productsList.appendChild(row);
+  });
+}
+
+function renderHomePriceGrid() {
+  fillPriceTagGrid("home-price-grid", CONFIG.services);
+  fillPriceTagGrid("home-price-grid-products", CONFIG.products || []);
+}
+
+function fillPriceTagGrid(gridId, items) {
+  const grid = document.getElementById(gridId);
+  grid.innerHTML = "";
+  items.forEach(item => {
+    const tag = document.createElement("div");
+    tag.className = "price-tag";
+    tag.innerHTML = `<span class="price-tag-name">${localized(item, "name")}</span><span class="price-tag-value">${item.price}</span>`;
+    grid.appendChild(tag);
   });
 }
 
