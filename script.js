@@ -52,7 +52,6 @@ const I18N = {
     backHome: "Kthehu në Faqen Kryesore",
     pricingServicesHeader: "Shërbimet",
     pricingProductsHeader: "Produktet",
-    seeFullPriceList: "Shiko listën e plotë të çmimeve →",
     productsSub: "Gjenden në barbërhanë — nuk rezervohen online.",
     workPhotosNote: "Foto nga klientët tanë do të shtohen këtu së shpejti.",
     storyTitle: "Historia Jonë",
@@ -143,7 +142,6 @@ const I18N = {
     backHome: "Back to Home",
     pricingServicesHeader: "Services",
     pricingProductsHeader: "Products",
-    seeFullPriceList: "See full price list →",
     productsSub: "Available in-store — not booked online.",
     workPhotosNote: "Photos of our clients' cuts coming soon.",
     storyTitle: "Our Story",
@@ -624,18 +622,18 @@ function renderPricingList() {
 }
 
 function renderHomePriceGrid() {
-  fillPriceTagGrid("home-price-grid", CONFIG.services);
-  fillPriceTagGrid("home-price-grid-products", CONFIG.products || []);
+  fillPriceBoard("home-price-board-services", CONFIG.services);
+  fillPriceBoard("home-price-board-products", CONFIG.products || []);
 }
 
-function fillPriceTagGrid(gridId, items) {
-  const grid = document.getElementById(gridId);
-  grid.innerHTML = "";
+function fillPriceBoard(containerId, items) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
   items.forEach(item => {
-    const tag = document.createElement("div");
-    tag.className = "price-tag";
-    tag.innerHTML = `<span class="price-tag-name">${localized(item, "name")}</span><span class="price-tag-value">${item.price}</span>`;
-    grid.appendChild(tag);
+    const row = document.createElement("div");
+    row.className = "price-board-row";
+    row.innerHTML = `<span class="price-board-row-name">${localized(item, "name")}</span><span class="price-board-row-value">${item.price} Lekë</span>`;
+    container.appendChild(row);
   });
 }
 
