@@ -74,7 +74,7 @@ a **Cloudflare KV** namespace, one JSON list per date (key `bookings:2026-08-10`
 for example). Each entry is either:
 
 ```json
-{ "type": "booking", "barber": "endri", "time": "10:30", "serviceId": "qethje", "customerName": "...", "customerPhone": "..." }
+{ "type": "booking", "barber": "endri", "time": "10:30", "serviceIds": ["qethje", "dyll"], "customerName": "...", "customerPhone": "..." }
 { "type": "block",   "barber": "aldo",  "time": "16:00" }
 ```
 

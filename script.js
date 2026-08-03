@@ -11,7 +11,7 @@
 let CONFIG = null;
 
 const state = {
-  service: null,
+  services: [],
   barber: null,
   date: null,
   time: null,
@@ -134,9 +134,15 @@ function renderServiceOptions() {
     btn.dataset.serviceId = svc.id;
     btn.innerHTML = `${svc.name}<span class="opt-price">${svc.price} Lekë</span>`;
     btn.addEventListener("click", () => {
-      state.service = svc;
-      [...grid.children].forEach(c => c.classList.remove("selected"));
-      btn.classList.add("selected");
+      const idx = state.services.findIndex(s => s.id === svc.id);
+      if (idx === -1) {
+        state.services.push(svc);
+        btn.classList.add("selected");
+      } else {
+        state.services.splice(idx, 1);
+        btn.classList.remove("selected");
+      }
+      updateServiceTotal();
       refreshTimeGrid();
     });
     grid.appendChild(btn);
@@ -146,6 +152,24 @@ function renderServiceOptions() {
     card.innerHTML = `<h3>${svc.name}</h3><div class="service-price">${svc.price}<span> Lekë</span></div>`;
     displayGrid.appendChild(card);
   });
+}
+
+function parsePriceRange(price) {
+  if (typeof price === "number") return [price, price];
+  const parts = String(price).split("-").map(Number);
+  return parts.length === 2 && !isNaN(parts[1]) ? parts : [parts[0], parts[0]];
+}
+
+function updateServiceTotal() {
+  const totalEl = document.getElementById("service-total");
+  if (!state.services.length) { totalEl.textContent = ""; return; }
+  let lo = 0, hi = 0;
+  state.services.forEach(svc => {
+    const [l, h] = parsePriceRange(svc.price);
+    lo += l; hi += h;
+  });
+  const priceText = lo === hi ? `${lo} Lekë` : `${lo}-${hi} Lekë`;
+  totalEl.textContent = `${state.services.length} shërbime të zgjedhura — Totali: ${priceText}`;
 }
 
 function renderProducts() {
@@ -214,10 +238,12 @@ function generateSlots() {
   const closeMin = timeToMinutes(close);
   const lunchStartMin = timeToMinutes(lunchStart);
   const lunchEndMin = timeToMinutes(lunchEnd);
-  const lastServiceDuration = state.service ? state.service.duration : slotMinutes;
+  const totalDuration = state.services.length
+    ? state.services.reduce((sum, s) => sum + s.duration, 0)
+    : slotMinutes;
 
-  for (let t = openMin; t + lastServiceDuration <= closeMin; t += slotMinutes) {
-    const slotEnd = t + lastServiceDuration;
+  for (let t = openMin; t + totalDuration <= closeMin; t += slotMinutes) {
+    const slotEnd = t + totalDuration;
     const overlapsLunch = t < lunchEndMin && slotEnd > lunchStartMin;
     if (overlapsLunch) continue;
     slots.push(minutesToTime(t));
@@ -365,7 +391,7 @@ async function submitBooking() {
   const name = document.getElementById("customer-name").value.trim();
   const phone = document.getElementById("customer-phone").value.trim();
 
-  if (!state.service) return showFeedback("Zgjidh një shërbim.", "error");
+  if (!state.services.length) return showFeedback("Zgjidh të paktën një shërbim.", "error");
   if (!state.barber) return showFeedback("Zgjidh një berber.", "error");
   if (!state.date) return showFeedback("Zgjidh një datë.", "error");
   if (!state.time) return showFeedback("Zgjidh një orë.", "error");
@@ -384,7 +410,7 @@ async function submitBooking() {
         date: state.date,
         time: state.time,
         barber: state.barber,
-        serviceId: state.service.id,
+        serviceIds: state.services.map(s => s.id),
         customerName: name,
         customerPhone: phone
       })

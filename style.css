@@ -279,6 +279,8 @@ a { color: inherit; text-decoration: none; }
   text-transform: none;
   margin: 0 0 14px;
 }
+.step-hint { font-size: 12px; color: var(--grey); font-weight: 400; }
+.service-total { margin-top: 12px; font-weight: 600; color: var(--gold-light); }
 .step-num {
   width: 26px; height: 26px;
   border-radius: 50%;

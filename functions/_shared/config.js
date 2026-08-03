@@ -61,6 +61,17 @@ export function slotsOverlap(timeA, durationA, timeB, durationB) {
   return startA < endB && startB < endA;
 }
 
+export function totalDuration(config, serviceIds) {
+  return serviceIds.reduce((sum, id) => sum + (config.serviceDurations[id] || config.defaultDuration), 0);
+}
+
+// A stored KV entry is either a customer "booking" (has serviceIds, duration
+// is the sum of those services) or a barber "block" (no services, always
+// occupies one default-length slot).
+export function entryDuration(config, entry) {
+  return entry.type === "block" ? config.defaultDuration : totalDuration(config, entry.serviceIds || []);
+}
+
 export function kvKeyForDate(date) {
   return `bookings:${date}`;
 }

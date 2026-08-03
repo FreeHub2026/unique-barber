@@ -1,4 +1,4 @@
-import { loadConfig, timeToMinutes, minutesToTime, isValidDate, kvKeyForDate } from "../_shared/config.js";
+import { loadConfig, timeToMinutes, minutesToTime, isValidDate, kvKeyForDate, entryDuration } from "../_shared/config.js";
 
 // GET /api/availability?date=YYYY-MM-DD
 // Returns { endri: ["09:00", "09:30", ...], aldo: [...] } — every slotMinutes-
@@ -21,7 +21,7 @@ export async function onRequestGet({ request, env }) {
     const taken = new Set();
     for (const entry of entries) {
       if (entry.barber !== barberId) continue;
-      const duration = config.serviceDurations[entry.serviceId] || config.defaultDuration;
+      const duration = entryDuration(config, entry);
       const start = timeToMinutes(entry.time);
       for (let t = start; t < start + duration; t += config.hours.slotMinutes) {
         taken.add(minutesToTime(t));

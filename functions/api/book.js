@@ -1,7 +1,7 @@
-import { loadConfig, isValidDate, isValidTime, slotsOverlap, kvKeyForDate, weekdayOf } from "../_shared/config.js";
+import { loadConfig, isValidDate, isValidTime, slotsOverlap, kvKeyForDate, weekdayOf, totalDuration, entryDuration } from "../_shared/config.js";
 
 // POST /api/book
-// body: { date, time, barber ("endri"|"aldo"|"any"), serviceId, customerName, customerPhone }
+// body: { date, time, barber ("endri"|"aldo"|"any"), serviceIds: [...], customerName, customerPhone }
 export async function onRequestPost({ request, env }) {
   let body;
   try {
@@ -10,7 +10,7 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "Kërkesë e pavlefshme." }, 400);
   }
 
-  const { date, time, barber, serviceId, customerName, customerPhone } = body || {};
+  const { date, time, barber, serviceIds, customerName, customerPhone } = body || {};
   const config = await loadConfig(request, env);
 
   if (!isValidDate(date)) return json({ error: "Datë e pavlefshme." }, 400);
@@ -18,7 +18,9 @@ export async function onRequestPost({ request, env }) {
   if (!barber || (barber !== "any" && !config.barberIds.includes(barber))) {
     return json({ error: "Berber i pavlefshëm." }, 400);
   }
-  if (!config.servicesById[serviceId]) return json({ error: "Shërbim i pavlefshëm." }, 400);
+  if (!Array.isArray(serviceIds) || serviceIds.length === 0 || !serviceIds.every(id => config.servicesById[id])) {
+    return json({ error: "Shërbim i pavlefshëm." }, 400);
+  }
   if (!customerName || !String(customerName).trim()) {
     return json({ error: "Emri mungon." }, 400);
   }
@@ -33,7 +35,7 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "Atë ditë jemi mbyllur." }, 400);
   }
 
-  const duration = config.serviceDurations[serviceId] || config.defaultDuration;
+  const duration = totalDuration(config, serviceIds);
   const key = kvKeyForDate(date);
   const raw = await env.BOOKINGS_KV.get(key);
   const entries = raw ? JSON.parse(raw) : [];
@@ -44,7 +46,7 @@ export async function onRequestPost({ request, env }) {
   for (const candidate of candidates) {
     const conflict = entries.some(e =>
       e.barber === candidate &&
-      slotsOverlap(e.time, config.serviceDurations[e.serviceId] || config.defaultDuration, time, duration)
+      slotsOverlap(e.time, entryDuration(config, e), time, duration)
     );
     if (!conflict) {
       assignedBarber = candidate;
@@ -60,7 +62,7 @@ export async function onRequestPost({ request, env }) {
     id: crypto.randomUUID(),
     type: "booking",
     barber: assignedBarber,
-    serviceId,
+    serviceIds,
     time,
     customerName: String(customerName).trim(),
     customerPhone: String(customerPhone).trim(),
@@ -99,12 +101,13 @@ async function notifyTelegram(env, config, entry, date, barberId) {
     console.error("Telegram not configured — set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID.");
     return;
   }
-  const service = config.servicesById[entry.serviceId];
+  const services = entry.serviceIds.map(id => config.servicesById[id]);
+  const serviceLines = services.map(s => `${s.name} (${s.price} Lekë)`).join(", ");
   const barberName = config.barbers.find(b => b.id === barberId)?.name || barberId;
   const text =
     `✂️ Rezervim i ri!\n` +
     `Berberi: ${barberName}\n` +
-    `Shërbimi: ${service.name} (${service.price} Lekë)\n` +
+    `Shërbimet: ${serviceLines}\n` +
     `Data: ${date} ora ${entry.time}\n` +
     `Klienti: ${entry.customerName}\n` +
     `Telefoni: ${entry.customerPhone}`;
