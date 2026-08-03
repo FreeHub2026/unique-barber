@@ -147,6 +147,21 @@ a { color: inherit; text-decoration: none; }
   background: none; border: none; cursor: pointer; color: var(--cream); padding: 0;
 }
 .brand-mark { font-size: 20px; }
+
+.header-actions { display: flex; align-items: center; gap: 10px; }
+.lang-toggle {
+  width: 44px; height: 32px;
+  border-radius: 999px;
+  border: 1px solid rgba(243,236,225,.25);
+  background: var(--charcoal-2);
+  color: var(--cream);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  cursor: pointer;
+  transition: border-color .2s ease, color .2s ease;
+}
+.lang-toggle:hover { border-color: var(--gold); color: var(--gold-light); }
 .brand-name em { color: var(--gold); font-style: normal; }
 
 .barber-pole {
@@ -345,8 +360,8 @@ a { color: inherit; text-decoration: none; }
 
 .home-tiles {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
   margin: 40px 0 26px;
 }
 .home-tile {
@@ -617,6 +632,48 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ---------- About screen ---------- */
+.story-title {
+  font-size: 22px;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin: 0 0 12px;
+}
+.story-text {
+  color: var(--cream);
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0 0 30px;
+  border-left: 2px solid var(--gold);
+  padding-left: 16px;
+}
+
+/* ---------- Pricing screen ---------- */
+.price-list-heading {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--gold-light);
+  margin: 26px 0 12px;
+}
+.price-list-heading:first-of-type { margin-top: 0; }
+.price-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px; }
+.price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(243,236,225,.12);
+}
+.price-row-name { font-size: 14px; color: var(--cream); }
+.price-row-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 17px;
+  color: var(--gold-light);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
 .about-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -709,4 +766,7 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 480px) {
   .home-hero h1 { font-size: 36px; }
   .about-info { grid-template-columns: 1fr; text-align: left; }
+  .home-tiles { gap: 6px; }
+  .home-tile { padding: 14px 4px; font-size: 10px; }
+  .home-tile-icon { font-size: 19px; }
 }

@@ -6,6 +6,13 @@
 
   "address": "Rruga Lef Nosi, Elbasan 3001",
 
+  "establishedYear": 2009,
+
+  "story": {
+    "sq": "Që nga 2009, dy vëllezër nisën një rrugëtim të përbashkët për t'u bërë berberët më të mirë në Elbasan. Sot, Endri dhe Aldo sjellin atë përvojë në çdo prerje — precizion, stil dhe kujdes në çdo detaj.",
+    "en": "Since 2009, two brothers set out together to become the best barbers in Elbasan. Today, Endri and Aldo bring that experience to every cut — precision, style, and care in every detail."
+  },
+
   "social": {
     "instagram": "https://instagram.com/uniqebarber24",
     "facebook": "",
@@ -18,27 +25,27 @@
   ],
 
   "highlights": [
-    { "icon": "✂️", "title": "Lineup i Përsosur", "text": "Precizion i pastër në çdo skicim, çdo herë." },
-    { "icon": "💆", "title": "Kujdes për Fytyrën", "text": "Trajtime fytyre që lënë lëkurën të freskët e të pastër." },
-    { "icon": "🧴", "title": "Produkte Premium", "text": "Vetëm xhel, dyll dhe kremra të cilësisë më të lartë." },
-    { "icon": "🏆", "title": "Berberët Më me Përvojë", "text": "Endri & Aldo — stil i vërtetë, jo eksperimente." }
+    { "icon": "✂️", "title": "Lineup i Përsosur", "titleEn": "Perfect Lineups", "text": "Precizion i pastër në çdo skicim, çdo herë.", "textEn": "Clean precision in every edge-up, every time." },
+    { "icon": "💆", "title": "Kujdes për Fytyrën", "titleEn": "Face Care", "text": "Trajtime fytyre që lënë lëkurën të freskët e të pastër.", "textEn": "Face treatments that leave your skin fresh and clean." },
+    { "icon": "🧴", "title": "Produkte Premium", "titleEn": "Premium Products", "text": "Vetëm xhel, dyll dhe kremra të cilësisë më të lartë.", "textEn": "Only the highest quality gel, wax, and creams." },
+    { "icon": "🏆", "title": "Berberët Më me Përvojë", "titleEn": "The Most Experienced Barbers", "text": "Endri & Aldo — stil i vërtetë, jo eksperimente.", "textEn": "Endri & Aldo — real style, not experiments." }
   ],
 
   "services": [
-    { "id": "qethje", "name": "Qethje", "price": 400, "duration": 30 },
-    { "id": "qethje-0-forte", "name": "Qethje me 0 të fortë", "price": 500, "duration": 30 },
-    { "id": "stilim-mjekre", "name": "Stilim Mjekre", "price": 200, "duration": 2 },
-    { "id": "rruajtje", "name": "Rruajtje", "price": 100, "duration": 2 },
-    { "id": "larje-koke", "name": "Larje Koke", "price": 100, "duration": 2 },
-    { "id": "dyll", "name": "Dyll", "price": 100, "duration": 2 },
-    { "id": "trajtim-fytyre", "name": "Trajtim Fytyre", "price": "1500-2000", "duration": 10 }
+    { "id": "qethje", "name": "Qethje", "nameEn": "Haircut", "price": 400, "duration": 30 },
+    { "id": "qethje-0-forte", "name": "Qethje me 0 të fortë", "nameEn": "Buzz Cut (0 Guard)", "price": 500, "duration": 30 },
+    { "id": "stilim-mjekre", "name": "Stilim Mjekre", "nameEn": "Beard Styling", "price": 200, "duration": 2 },
+    { "id": "rruajtje", "name": "Rruajtje", "nameEn": "Shave", "price": 100, "duration": 2 },
+    { "id": "larje-koke", "name": "Larje Koke", "nameEn": "Hair Wash", "price": 100, "duration": 2 },
+    { "id": "dyll", "name": "Dyll", "nameEn": "Wax", "price": 100, "duration": 2 },
+    { "id": "trajtim-fytyre", "name": "Trajtim Fytyre", "nameEn": "Face Treatment", "price": "1500-2000", "duration": 10 }
   ],
 
   "products": [
-    { "id": "uji", "name": "Uji", "price": 50 },
-    { "id": "kafe", "name": "Kafe", "price": 50 },
-    { "id": "xhel", "name": "Xhelë", "price": "300-500" },
-    { "id": "kreher", "name": "Kreher", "price": "100-300" }
+    { "id": "uji", "name": "Uji", "nameEn": "Water", "price": 50 },
+    { "id": "kafe", "name": "Kafe", "nameEn": "Coffee", "price": 50 },
+    { "id": "xhel", "name": "Xhelë", "nameEn": "Gel", "price": "300-500" },
+    { "id": "kreher", "name": "Kreher", "nameEn": "Comb", "price": "100-300" }
   ],
 
   "hours": {

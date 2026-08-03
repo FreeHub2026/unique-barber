@@ -2,11 +2,241 @@
    UNIQUE BARBER — booking logic
    -------------------------------------------------------------------------
    Everything you (Endri/Aldo) would want to change — phone number, social
-   links, services/prices, barbers, opening hours, gallery photos — lives
-   in ONE place: config.json, next to this file. Edit that file, save,
-   redeploy. Nothing in script.js needs to change for those kinds of edits,
-   including adding a new barber or a new service.
+   links, services/prices, barbers, opening hours, gallery photos, the
+   story text — lives in ONE place: config.json, next to this file. Fields
+   ending in "En" (e.g. nameEn, textEn) are the English version — leave
+   them blank and the site just shows the Albanian text for everyone.
    ========================================================================= */
+
+const I18N = {
+  sq: {
+    heroBadge: "Përsosmëri · Stil · Detaje",
+    heroTitle: "Stili Fillon<br>Këtu.",
+    heroSub: "Lineup të përsosur, trajtime fytyre të kujdesshme dhe produkte premium — nga berberët më me përvojë në Elbasan.",
+    bookNow: "Rezervo Tani",
+    googleReviews: "★★★★★ Shiko vlerësimet tona në Google",
+    whyUsTitle: "Pse Ne?",
+    tilePricing: "Çmimorja",
+    tileProducts: "Produktet",
+    tileWork: "Punët Tona",
+    tileAbout: "Rreth Nesh",
+    cancelLink: "Anulo një rezervim ekzistues",
+    step1of4: "Hapi 1 nga 4",
+    step2of4: "Hapi 2 nga 4",
+    step3of4: "Hapi 3 nga 4",
+    step4of4: "Hapi 4 nga 4",
+    chooseServices: "Zgjidh Shërbimet",
+    chooseServicesSub: "Zgjidh një ose më shumë.",
+    continueBtn: "Vazhdo",
+    doneBtn: "Përfundo",
+    under10Label: "Klienti është nën 10 vjeç",
+    under10Hint: "(caktohet automatikisht te Endri)",
+    barberScreenTitleBooking: "Zgjidh Berberin",
+    barberScreenTitleBlocking: "Për Cilin Berber?",
+    barberProgressBlocking: "Bllokim Ore",
+    datetimeScreenTitleBooking: "Zgjidh Datën & Orën",
+    datetimeScreenTitleBlocking: "Blloko / Zhblloko Orë",
+    pickDateHint: "Zgjidh një datë për të parë orët e lira.",
+    pickBarberHint: "Zgjidh një berber për të parë orët e lira.",
+    closedWednesdayHint: "Të mërkurën jemi mbyllur — zgjidh një ditë tjetër.",
+    loadingHint: "Duke ngarkuar…",
+    noSlotsHint: "S'ka orë të lira për këtë shërbim/datë.",
+    yourDetails: "Të Dhënat Tuaja",
+    placeholderName: "Emri e Mbiemri",
+    placeholderPhone: "Numri i telefonit",
+    placeholderNotes: "Ka diçka që duhet ta dijë berberi? (p.sh. lëkurë e ndjeshme, nishane, aftësi të kufizuara, etj. — opsionale)",
+    confirmBooking: "Konfirmo Rezervimin",
+    payNote: "💵 Pagesa bëhet në barbërhanë, kur vjen për termin.",
+    bookingConfirmedTitle: "Rezervimi u Konfirmua",
+    bookingConfirmedMsg: "Faleminderit, {name}! Rezervimi u konfirmua te {barber}, më {date} në {time}.",
+    backHome: "Kthehu në Faqen Kryesore",
+    pricingServicesHeader: "Shërbimet",
+    pricingProductsHeader: "Produktet",
+    productsSub: "Gjenden në barbërhanë — nuk rezervohen online.",
+    workPhotosNote: "Foto nga klientët tanë do të shtohen këtu së shpejti.",
+    storyTitle: "Historia Jonë",
+    shopPhotosNote: "Foto të barbërhanës do të shtohen këtu së shpejti.",
+    contactLabel: "Kontakt",
+    hoursLabel: "Orari",
+    hoursLine1: "E Hënë, Martë, Enjte – Diel: 09:00 – 21:00",
+    hoursLine2: "Pushim dreke: 14:00 – 16:00",
+    hoursLine3: "E Mërkurë: Mbyllur",
+    followUsLabel: "Na Ndiqni",
+    barberModeLink: "Jam berber — dua të bllokoj një orë",
+    exitBarberModeLink: "Dil nga modaliteti berber",
+    cancelTitle: "Anulo Rezervimin",
+    cancelSub: "Vendos datën dhe numrin e telefonit që përdore kur rezervove.",
+    searchBooking: "Kërko Rezervimin",
+    pinPrompt: "Vendos PIN-in për të bllokuar/zhbllokuar orë:",
+    placeholderPin: "PIN",
+    enterBtn: "Hyr",
+    pinWrong: "PIN i gabuar.",
+    cancelActionBtn: "Anulo",
+    allRightsReserved: "Të gjitha të drejtat e rezervuara.",
+
+    openStatusClosedToday: "Mbyllur sot (E Mërkurë) · Hapim nesër në {open}",
+    openStatusLunch: "Pushim dreke deri në {lunchEnd}",
+    openStatusOpen: "Hapur tani · Mbyllim në {close}",
+    openStatusClosed: "Mbyllur · Hapim në {open}",
+
+    pickAtLeastOneService: "Zgjidh të paktën një shërbim.",
+    serviceCountTotal: "{count} shërbime të zgjedhura — Totali: {price}",
+    pickBarberError: "Zgjidh një berber.",
+    pickDateError: "Zgjidh një datë.",
+    pickTimeError: "Zgjidh një orë.",
+    writeNameError: "Shkruaj emrin tënd.",
+    writePhoneError: "Shkruaj numrin e telefonit.",
+    sendingMsg: "Duke dërguar…",
+    slotTakenError: "Ora u zu ndërkohë, zgjidh një tjetër.",
+    genericError: "Diçka shkoi gabim. Provo përsëri ose na telefono.",
+    genericErrorShort: "Diçka shkoi gabim.",
+    pickSpecificBarberError: "Zgjidh një berber specifik (jo 'Pa preferencë') për të bllokuar orë.",
+    blockActionError: "Nuk u krye dot veprimi.",
+
+    cancelFillFields: "Vendos datën dhe numrin e telefonit.",
+    cancelSearching: "Duke kërkuar…",
+    cancelNotFound: "S'u gjet asnjë rezervim me këto të dhëna.",
+    cancelSuccess: "Rezervimi u anulua.",
+    cancelActionFailed: "Nuk u anulua dot rezervimi."
+  },
+  en: {
+    heroBadge: "Excellence · Style · Detail",
+    heroTitle: "Style Starts<br>Here.",
+    heroSub: "Perfect lineups, careful face treatments, and premium products — from Elbasan's most experienced barbers.",
+    bookNow: "Book Now",
+    googleReviews: "★★★★★ See our Google reviews",
+    whyUsTitle: "Why Us?",
+    tilePricing: "Price List",
+    tileProducts: "Products",
+    tileWork: "Our Work",
+    tileAbout: "About Us",
+    cancelLink: "Cancel an existing booking",
+    step1of4: "Step 1 of 4",
+    step2of4: "Step 2 of 4",
+    step3of4: "Step 3 of 4",
+    step4of4: "Step 4 of 4",
+    chooseServices: "Choose Your Services",
+    chooseServicesSub: "Pick one or more.",
+    continueBtn: "Continue",
+    doneBtn: "Done",
+    under10Label: "Customer is under 10 years old",
+    under10Hint: "(automatically assigned to Endri)",
+    barberScreenTitleBooking: "Choose Your Barber",
+    barberScreenTitleBlocking: "Which Barber?",
+    barberProgressBlocking: "Blocking Time",
+    datetimeScreenTitleBooking: "Choose Date & Time",
+    datetimeScreenTitleBlocking: "Block / Unblock Time",
+    pickDateHint: "Pick a date to see available times.",
+    pickBarberHint: "Pick a barber to see available times.",
+    closedWednesdayHint: "We're closed on Wednesdays — pick another day.",
+    loadingHint: "Loading…",
+    noSlotsHint: "No available times for this service/date.",
+    yourDetails: "Your Details",
+    placeholderName: "Full Name",
+    placeholderPhone: "Phone Number",
+    placeholderNotes: "Anything the barber should know? (e.g. sensitive skin, moles, accessibility needs, etc. — optional)",
+    confirmBooking: "Confirm Booking",
+    payNote: "💵 Payment is made at the shop, when you arrive.",
+    bookingConfirmedTitle: "Booking Confirmed",
+    bookingConfirmedMsg: "Thank you, {name}! Your booking with {barber} is confirmed for {date} at {time}.",
+    backHome: "Back to Home",
+    pricingServicesHeader: "Services",
+    pricingProductsHeader: "Products",
+    productsSub: "Available in-store — not booked online.",
+    workPhotosNote: "Photos of our clients' cuts coming soon.",
+    storyTitle: "Our Story",
+    shopPhotosNote: "Photos of the shop coming soon.",
+    contactLabel: "Contact",
+    hoursLabel: "Hours",
+    hoursLine1: "Mon, Tue, Thu – Sun: 9:00 AM – 9:00 PM",
+    hoursLine2: "Lunch break: 2:00 PM – 4:00 PM",
+    hoursLine3: "Wednesday: Closed",
+    followUsLabel: "Follow Us",
+    barberModeLink: "I'm a barber — I want to block a time",
+    exitBarberModeLink: "Exit barber mode",
+    cancelTitle: "Cancel Booking",
+    cancelSub: "Enter the date and phone number you used to book.",
+    searchBooking: "Find Booking",
+    pinPrompt: "Enter your PIN to block/unblock a time:",
+    placeholderPin: "PIN",
+    enterBtn: "Enter",
+    pinWrong: "Wrong PIN.",
+    cancelActionBtn: "Cancel",
+    allRightsReserved: "All rights reserved.",
+
+    openStatusClosedToday: "Closed today (Wednesday) · Opens tomorrow at {open}",
+    openStatusLunch: "Lunch break until {lunchEnd}",
+    openStatusOpen: "Open now · Closes at {close}",
+    openStatusClosed: "Closed · Opens at {open}",
+
+    pickAtLeastOneService: "Pick at least one service.",
+    serviceCountTotal: "{count} services selected — Total: {price}",
+    pickBarberError: "Pick a barber.",
+    pickDateError: "Pick a date.",
+    pickTimeError: "Pick a time.",
+    writeNameError: "Enter your name.",
+    writePhoneError: "Enter your phone number.",
+    sendingMsg: "Sending…",
+    slotTakenError: "That time was just taken — pick another.",
+    genericError: "Something went wrong. Try again or call us.",
+    genericErrorShort: "Something went wrong.",
+    pickSpecificBarberError: "Pick a specific barber (not 'No preference') to block a time.",
+    blockActionError: "Couldn't complete that action.",
+
+    cancelFillFields: "Enter the date and phone number.",
+    cancelSearching: "Searching…",
+    cancelNotFound: "No booking found with those details.",
+    cancelSuccess: "Booking cancelled.",
+    cancelActionFailed: "Couldn't cancel that booking."
+  }
+};
+
+let currentLang = localStorage.getItem("ub_lang") || "sq";
+
+function t(key, vars) {
+  let str = (I18N[currentLang] && I18N[currentLang][key]) || I18N.sq[key] || key;
+  if (vars) {
+    Object.entries(vars).forEach(([k, v]) => { str = str.replace(`{${k}}`, v); });
+  }
+  return str;
+}
+
+function localized(obj, field) {
+  const enField = field + "En";
+  if (currentLang === "en" && obj[enField]) return obj[enField];
+  return obj[field];
+}
+
+function applyStaticTranslations() {
+  document.documentElement.lang = currentLang;
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
+  document.getElementById("lang-toggle").textContent = currentLang === "sq" ? "EN" : "SQ";
+}
+
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem("ub_lang", lang);
+  applyStaticTranslations();
+  if (CONFIG) {
+    renderHighlights();
+    renderServiceOptions();
+    renderProducts();
+    renderBarberOptions();
+    renderPricingList();
+    renderStory();
+    updateServiceTotal();
+    updateOpenStatus();
+    refreshTimeGrid();
+  }
+}
+
+function wireLanguageToggle() {
+  document.getElementById("lang-toggle").addEventListener("click", () => {
+    setLanguage(currentLang === "sq" ? "en" : "sq");
+  });
+}
 
 let CONFIG = null;
 
@@ -21,6 +251,8 @@ const state = {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
+  applyStaticTranslations();
+  wireLanguageToggle();
   wireIntro();
   wireNavigation();
   wireBarberPinModal();
@@ -33,6 +265,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderServiceOptions();
   renderProducts();
   renderBarberOptions();
+  renderPricingList();
+  renderStory();
   setupDateInputs();
   updateOpenStatus();
   setInterval(updateOpenStatus, 60 * 1000);
@@ -109,7 +343,7 @@ function wireNavigation() {
   document.getElementById("barber-next").addEventListener("click", () => {
     const err = document.getElementById("barber-error");
     if (!state.barber) {
-      err.textContent = "Zgjidh një berber.";
+      err.textContent = t("pickBarberError");
       err.classList.remove("hidden");
       return;
     }
@@ -120,7 +354,7 @@ function wireNavigation() {
   document.getElementById("datetime-next").addEventListener("click", () => {
     const err = document.getElementById("datetime-error");
     if (!state.time) {
-      err.textContent = "Zgjidh një orë.";
+      err.textContent = t("pickTimeError");
       err.classList.remove("hidden");
       return;
     }
@@ -145,12 +379,12 @@ function onScreenEnter(name) {
     const progress = document.getElementById("barber-progress");
     const under10Wrap = document.getElementById("under-10-wrap");
     if (state.barberMode) {
-      title.textContent = "Për Cilin Berber?";
-      progress.textContent = "Bllokim Ore";
+      title.textContent = t("barberScreenTitleBlocking");
+      progress.textContent = t("barberProgressBlocking");
       under10Wrap.classList.add("hidden");
     } else {
-      title.textContent = "Zgjidh Berberin";
-      progress.textContent = "Hapi 2 nga 4";
+      title.textContent = t("barberScreenTitleBooking");
+      progress.textContent = t("step2of4");
       under10Wrap.classList.remove("hidden");
     }
   }
@@ -159,11 +393,11 @@ function onScreenEnter(name) {
     const title = document.getElementById("datetime-screen-title");
     const progress = document.getElementById("datetime-progress");
     if (state.barberMode) {
-      title.textContent = "Blloko / Zhblloko Orë";
-      progress.textContent = "Bllokim Ore";
+      title.textContent = t("datetimeScreenTitleBlocking");
+      progress.textContent = t("barberProgressBlocking");
     } else {
-      title.textContent = "Zgjidh Datën & Orën";
-      progress.textContent = "Hapi 3 nga 4";
+      title.textContent = t("datetimeScreenTitleBooking");
+      progress.textContent = t("step3of4");
     }
     refreshTimeGrid();
   }
@@ -226,16 +460,23 @@ function renderStaticContent() {
   }
 }
 
+function renderStory() {
+  const el = document.getElementById("story-text");
+  if (!CONFIG.story) { el.textContent = ""; return; }
+  el.textContent = currentLang === "en" && CONFIG.story.en ? CONFIG.story.en : CONFIG.story.sq;
+}
+
 function renderPhotoGrid(gridId, noteId, photos) {
   const grid = document.getElementById(gridId);
   const note = document.getElementById(noteId);
+  grid.innerHTML = "";
   if (!photos.length) return;
   note.classList.add("hidden");
   photos.forEach((src, i) => {
     const figure = document.createElement("figure");
     figure.tabIndex = 0;
     figure.setAttribute("role", "button");
-    figure.setAttribute("aria-label", `Shiko foton ${i + 1} të madhe`);
+    figure.setAttribute("aria-label", `${i + 1}`);
     const img = document.createElement("img");
     img.src = src;
     img.alt = CONFIG.shopName;
@@ -284,14 +525,31 @@ function wireLightbox() {
   });
 }
 
+function renderHighlights() {
+  const grid = document.getElementById("highlights-grid");
+  grid.innerHTML = "";
+  (CONFIG.highlights || []).forEach(h => {
+    const card = document.createElement("div");
+    card.className = "highlight-card";
+    card.innerHTML = `
+      <div class="highlight-icon">${h.icon}</div>
+      <h3>${localized(h, "title")}</h3>
+      <p>${localized(h, "text")}</p>
+    `;
+    grid.appendChild(card);
+  });
+}
+
 function renderServiceOptions() {
   const grid = document.getElementById("service-options");
+  grid.innerHTML = "";
   CONFIG.services.forEach(svc => {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "option-btn";
     btn.dataset.serviceId = svc.id;
-    btn.innerHTML = `${svc.name}<span class="opt-price">${svc.price} Lekë</span>`;
+    if (state.services.some(s => s.id === svc.id)) btn.classList.add("selected");
+    btn.innerHTML = `${localized(svc, "name")}<span class="opt-price">${svc.price} Lekë</span>`;
     btn.addEventListener("click", () => {
       const idx = state.services.findIndex(s => s.id === svc.id);
       if (idx === -1) {
@@ -316,7 +574,7 @@ function parsePriceRange(price) {
 function updateServiceTotal() {
   const totalEl = document.getElementById("service-total");
   if (!state.services.length) {
-    totalEl.textContent = "Zgjidh të paktën një shërbim.";
+    totalEl.textContent = t("pickAtLeastOneService");
     totalEl.classList.add("error-text");
     return;
   }
@@ -327,44 +585,55 @@ function updateServiceTotal() {
     lo += l; hi += h;
   });
   const priceText = lo === hi ? `${lo} Lekë` : `${lo}-${hi} Lekë`;
-  totalEl.textContent = `${state.services.length} shërbime të zgjedhura — Totali: ${priceText}`;
-}
-
-function renderHighlights() {
-  const grid = document.getElementById("highlights-grid");
-  (CONFIG.highlights || []).forEach(h => {
-    const card = document.createElement("div");
-    card.className = "highlight-card";
-    card.innerHTML = `
-      <div class="highlight-icon">${h.icon}</div>
-      <h3>${h.title}</h3>
-      <p>${h.text}</p>
-    `;
-    grid.appendChild(card);
-  });
+  totalEl.textContent = t("serviceCountTotal", { count: state.services.length, price: priceText });
 }
 
 function renderProducts() {
   const grid = document.getElementById("products-grid");
+  grid.innerHTML = "";
   (CONFIG.products || []).forEach(product => {
     const card = document.createElement("div");
     card.className = "service-card";
-    card.innerHTML = `<h3>${product.name}</h3><div class="service-price">${product.price}<span> Lekë</span></div>`;
+    card.innerHTML = `<h3>${localized(product, "name")}</h3><div class="service-price">${product.price}<span> Lekë</span></div>`;
     grid.appendChild(card);
+  });
+}
+
+function renderPricingList() {
+  const servicesList = document.getElementById("pricing-services-list");
+  const productsList = document.getElementById("pricing-products-list");
+  servicesList.innerHTML = "";
+  productsList.innerHTML = "";
+
+  CONFIG.services.forEach(svc => {
+    const row = document.createElement("div");
+    row.className = "price-row";
+    row.innerHTML = `<span class="price-row-name">${localized(svc, "name")}</span><span class="price-row-value">${svc.price} Lekë</span>`;
+    servicesList.appendChild(row);
+  });
+
+  (CONFIG.products || []).forEach(p => {
+    const row = document.createElement("div");
+    row.className = "price-row";
+    row.innerHTML = `<span class="price-row-name">${localized(p, "name")}</span><span class="price-row-value">${p.price} Lekë</span>`;
+    productsList.appendChild(row);
   });
 }
 
 function renderBarberOptions() {
   const grid = document.getElementById("barber-options");
   const displayGrid = document.getElementById("barbers-grid");
+  grid.innerHTML = "";
+  displayGrid.innerHTML = "";
 
-  const options = [...CONFIG.barbers, { id: "any", name: "Pa preferencë" }];
+  const options = [...CONFIG.barbers, { id: "any", name: currentLang === "en" ? "No preference" : "Pa preferencë" }];
   options.forEach(b => {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "option-btn";
     btn.dataset.barberId = b.id;
     btn.textContent = b.name;
+    if (state.barber === b.id) btn.classList.add("selected");
     btn.addEventListener("click", () => {
       state.barber = b.id;
       [...grid.children].forEach(c => c.classList.remove("selected"));
@@ -380,7 +649,7 @@ function renderBarberOptions() {
       <div class="barber-avatar">${b.name[0]}</div>
       <h3>${b.name}</h3>
       <p>Berber</p>
-      ${b.phone ? `<a class="barber-call" href="tel:+${b.phone}">📞 Telefono ${b.name.split(" ")[0]}</a>` : ""}
+      ${b.phone ? `<a class="barber-call" href="tel:+${b.phone}">📞 ${b.name.split(" ")[0]}</a>` : ""}
     `;
     displayGrid.appendChild(card);
   });
@@ -453,7 +722,7 @@ function updateOpenStatus() {
   const dotEl = document.querySelector(".dot");
 
   if (now.getDay() === closedWeekday) {
-    statusEl.textContent = "Mbyllur sot (E Mërkurë) · Hapim nesër në " + open;
+    statusEl.textContent = t("openStatusClosedToday", { open });
     dotEl.classList.add("closed");
     return;
   }
@@ -461,11 +730,11 @@ function updateOpenStatus() {
   let isOpen = nowMin >= openMin && nowMin < closeMin && !(nowMin >= lunchStartMin && nowMin < lunchEndMin);
 
   if (nowMin >= lunchStartMin && nowMin < lunchEndMin) {
-    statusEl.textContent = `Pushim dreke deri në ${lunchEnd}`;
+    statusEl.textContent = t("openStatusLunch", { lunchEnd });
   } else if (isOpen) {
-    statusEl.textContent = `Hapur tani · Mbyllim në ${close}`;
+    statusEl.textContent = t("openStatusOpen", { close });
   } else {
-    statusEl.textContent = `Mbyllur · Hapim në ${open}`;
+    statusEl.textContent = t("openStatusClosed", { open });
   }
   dotEl.classList.toggle("closed", !isOpen);
 }
@@ -512,19 +781,19 @@ async function refreshTimeGrid() {
   doneBtn.classList.toggle("hidden", !state.barberMode);
 
   if (!state.date) {
-    wrap.innerHTML = `<p class="hint-text">Zgjidh një datë për të parë orët e lira.</p>`;
+    wrap.innerHTML = `<p class="hint-text">${t("pickDateHint")}</p>`;
     return;
   }
   if (!state.barberMode && !state.barber) {
-    wrap.innerHTML = `<p class="hint-text">Zgjidh një berber për të parë orët e lira.</p>`;
+    wrap.innerHTML = `<p class="hint-text">${t("pickBarberHint")}</p>`;
     return;
   }
   if (new Date(`${state.date}T00:00:00`).getDay() === CONFIG.hours.closedWeekday) {
-    wrap.innerHTML = `<p class="hint-text">Të mërkurën jemi mbyllur — zgjidh një ditë tjetër.</p>`;
+    wrap.innerHTML = `<p class="hint-text">${t("closedWednesdayHint")}</p>`;
     return;
   }
 
-  wrap.innerHTML = `<p class="hint-text">Duke ngarkuar…</p>`;
+  wrap.innerHTML = `<p class="hint-text">${t("loadingHint")}</p>`;
   const availability = await fetchAvailability(state.date);
   state.availability = availability;
 
@@ -558,6 +827,7 @@ async function refreshTimeGrid() {
         btn.classList.add("taken");
         btn.disabled = true;
       } else {
+        if (state.time === slot) btn.classList.add("selected");
         btn.addEventListener("click", () => {
           state.time = slot;
           [...wrap.children].forEach(c => c.classList.remove("selected"));
@@ -570,7 +840,7 @@ async function refreshTimeGrid() {
   });
 
   if (!slots.length) {
-    wrap.innerHTML = `<p class="hint-text">S'ka orë të lira për këtë shërbim/datë.</p>`;
+    wrap.innerHTML = `<p class="hint-text">${t("noSlotsHint")}</p>`;
   }
 }
 
@@ -585,16 +855,16 @@ async function submitBooking() {
   const phone = document.getElementById("customer-phone").value.trim();
   const notes = document.getElementById("customer-notes").value.trim();
 
-  if (!state.services.length) return showFeedback("Zgjidh të paktën një shërbim.", "error");
-  if (!state.barber) return showFeedback("Zgjidh një berber.", "error");
-  if (!state.date) return showFeedback("Zgjidh një datë.", "error");
-  if (!state.time) return showFeedback("Zgjidh një orë.", "error");
-  if (!name) return showFeedback("Shkruaj emrin tënd.", "error");
-  if (!phone) return showFeedback("Shkruaj numrin e telefonit.", "error");
+  if (!state.services.length) return showFeedback(t("pickAtLeastOneService"), "error");
+  if (!state.barber) return showFeedback(t("pickBarberError"), "error");
+  if (!state.date) return showFeedback(t("pickDateError"), "error");
+  if (!state.time) return showFeedback(t("pickTimeError"), "error");
+  if (!name) return showFeedback(t("writeNameError"), "error");
+  if (!phone) return showFeedback(t("writePhoneError"), "error");
 
   const btn = document.getElementById("submit-booking");
   btn.disabled = true;
-  showFeedback("Duke dërguar…", "");
+  showFeedback(t("sendingMsg"), "");
 
   try {
     const res = await fetch("/api/book", {
@@ -613,19 +883,19 @@ async function submitBooking() {
     const data = await res.json();
 
     if (!res.ok) {
-      showFeedback(data.error || "Ora u zu ndërkohë, zgjidh një tjetër.", "error");
+      showFeedback(data.error || t("slotTakenError"), "error");
       goto("wizard-datetime");
       return;
     }
 
     const barberName = CONFIG.barbers.find(b => b.id === data.barber)?.name || data.barber;
     document.getElementById("confirm-message").textContent =
-      `Faleminderit, ${name}! Rezervimi u konfirmua te ${barberName}, më ${state.date} në ${state.time}.`;
+      t("bookingConfirmedMsg", { name, barber: barberName, date: state.date, time: state.time });
     showFeedback("", "");
     goto("wizard-confirm", { reset: true });
   } catch (e) {
     console.error(e);
-    showFeedback("Diçka shkoi gabim. Provo përsëri ose na telefono.", "error");
+    showFeedback(t("genericError"), "error");
   } finally {
     btn.disabled = false;
   }
@@ -677,7 +947,7 @@ function wireBarberPinModal() {
 
 function enterBarberMode() {
   state.barberMode = true;
-  document.getElementById("barber-mode-btn").textContent = "Dil nga modaliteti berber";
+  document.getElementById("barber-mode-btn").textContent = t("exitBarberModeLink");
   if (!state.barber) {
     const firstBarberBtn = document.querySelector("#barber-options .option-btn");
     firstBarberBtn?.click();
@@ -689,12 +959,12 @@ function exitBarberMode() {
   state.barberMode = false;
   state.pin = null;
   sessionStorage.removeItem("ub_pin");
-  document.getElementById("barber-mode-btn").textContent = "Jam berber — dua të bllokoj një orë";
+  document.getElementById("barber-mode-btn").textContent = t("barberModeLink");
 }
 
 async function handleBlockToggle(time, isCurrentlyBlocked) {
   if (!state.date || !state.barber || state.barber === "any") {
-    document.getElementById("datetime-error").textContent = "Zgjidh një berber specifik (jo 'Pa preferencë') për të bllokuar orë.";
+    document.getElementById("datetime-error").textContent = t("pickSpecificBarberError");
     document.getElementById("datetime-error").classList.remove("hidden");
     return;
   }
@@ -719,7 +989,7 @@ async function handleBlockToggle(time, isCurrentlyBlocked) {
     }
     const data = await res.json();
     if (!res.ok) {
-      document.getElementById("datetime-error").textContent = data.error || "Nuk u krye dot veprimi.";
+      document.getElementById("datetime-error").textContent = data.error || t("blockActionError");
       document.getElementById("datetime-error").classList.remove("hidden");
       return;
     }
@@ -727,7 +997,7 @@ async function handleBlockToggle(time, isCurrentlyBlocked) {
     refreshTimeGrid();
   } catch (e) {
     console.error(e);
-    document.getElementById("datetime-error").textContent = "Diçka shkoi gabim.";
+    document.getElementById("datetime-error").textContent = t("genericErrorShort");
     document.getElementById("datetime-error").classList.remove("hidden");
   }
 }
@@ -744,11 +1014,11 @@ async function searchCancelBooking() {
   const results = document.getElementById("cancel-results");
 
   if (!date || !phone) {
-    results.innerHTML = `<p class="hint-text">Vendos datën dhe numrin e telefonit.</p>`;
+    results.innerHTML = `<p class="hint-text">${t("cancelFillFields")}</p>`;
     return;
   }
 
-  results.innerHTML = `<p class="hint-text">Duke kërkuar…</p>`;
+  results.innerHTML = `<p class="hint-text">${t("cancelSearching")}</p>`;
 
   try {
     const res = await fetch("/api/cancel", {
@@ -759,11 +1029,11 @@ async function searchCancelBooking() {
     const data = await res.json();
 
     if (!res.ok) {
-      results.innerHTML = `<p class="hint-text">${data.error || "Diçka shkoi gabim."}</p>`;
+      results.innerHTML = `<p class="hint-text">${data.error || t("genericError")}</p>`;
       return;
     }
     if (!data.bookings.length) {
-      results.innerHTML = `<p class="hint-text">S'u gjet asnjë rezervim me këto të dhëna.</p>`;
+      results.innerHTML = `<p class="hint-text">${t("cancelNotFound")}</p>`;
       return;
     }
 
@@ -776,7 +1046,7 @@ async function searchCancelBooking() {
           <p class="cancel-item-time">${b.time}</p>
           <p class="cancel-item-detail">${b.barberName} · ${b.services.join(", ")}</p>
         </div>
-        <button type="button" class="cancel-item-cancel-btn">Anulo</button>
+        <button type="button" class="cancel-item-cancel-btn">${t("cancelActionBtn")}</button>
       `;
       item.querySelector(".cancel-item-cancel-btn").addEventListener("click", () =>
         confirmCancelBooking(date, phone, b.time, b.barber, item)
@@ -785,7 +1055,7 @@ async function searchCancelBooking() {
     });
   } catch (e) {
     console.error(e);
-    results.innerHTML = `<p class="hint-text">Diçka shkoi gabim. Provo përsëri ose na telefono.</p>`;
+    results.innerHTML = `<p class="hint-text">${t("genericError")}</p>`;
   }
 }
 
@@ -798,12 +1068,12 @@ async function confirmCancelBooking(date, phone, time, barber, itemEl) {
     });
     const data = await res.json();
     if (!res.ok) {
-      alert(data.error || "Nuk u anulua dot rezervimi.");
+      alert(data.error || t("cancelActionFailed"));
       return;
     }
-    itemEl.innerHTML = `<p class="hint-text">Rezervimi u anulua.</p>`;
+    itemEl.innerHTML = `<p class="hint-text">${t("cancelSuccess")}</p>`;
   } catch (e) {
     console.error(e);
-    alert("Diçka shkoi gabim. Provo përsëri ose na telefono.");
+    alert(t("genericError"));
   }
 }
