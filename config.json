@@ -24,14 +24,14 @@
     { "id": "rruajtje", "name": "Rruajtje", "price": 100, "duration": 2 },
     { "id": "larje-koke", "name": "Larje Koke", "price": 100, "duration": 2 },
     { "id": "dyll", "name": "Dyll", "price": 100, "duration": 2 },
-    { "id": "trajtim-fytyre", "name": "Trajtim Fytyre", "price": "1500-2000", "duration": 10 },
-    { "id": "krehje", "name": "Krehje", "price": "100-300", "duration": 2 }
+    { "id": "trajtim-fytyre", "name": "Trajtim Fytyre", "price": "1500-2000", "duration": 10 }
   ],
 
   "products": [
     { "id": "uji", "name": "Uji", "price": 50 },
     { "id": "kafe", "name": "Kafe", "price": 50 },
-    { "id": "xhel", "name": "Xhelë", "price": "300-500" }
+    { "id": "xhel", "name": "Xhelë", "price": "300-500" },
+    { "id": "kreher", "name": "Kreher", "price": "100-300" }
   ],
 
   "hours": {

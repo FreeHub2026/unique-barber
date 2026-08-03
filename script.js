@@ -213,6 +213,24 @@ function renderBarberOptions() {
     `;
     displayGrid.appendChild(card);
   });
+
+  wireUnder10Check(grid);
+}
+
+function wireUnder10Check(grid) {
+  const checkbox = document.getElementById("under-10-check");
+  checkbox.addEventListener("change", () => {
+    const buttons = [...grid.children];
+    if (checkbox.checked) {
+      const endriBtn = buttons.find(b => b.dataset.barberId === "endri");
+      endriBtn?.click();
+      buttons.forEach(b => {
+        if (b.dataset.barberId !== "endri") b.disabled = true;
+      });
+    } else {
+      buttons.forEach(b => { b.disabled = false; });
+    }
+  });
 }
 
 /* ---------- Opening hours ---------- */

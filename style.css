@@ -280,6 +280,12 @@ a { color: inherit; text-decoration: none; }
   margin: 0 0 14px;
 }
 .step-hint { font-size: 12px; color: var(--grey); font-weight: 400; }
+.child-check {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--grey);
+  margin-bottom: 14px; cursor: pointer;
+}
+.child-check input { accent-color: var(--gold); width: 16px; height: 16px; }
 .service-total { margin-top: 12px; font-weight: 600; color: var(--gold-light); }
 .step-num {
   width: 26px; height: 26px;
@@ -304,6 +310,8 @@ a { color: inherit; text-decoration: none; }
   transition: all .15s ease;
 }
 .option-btn:hover { border-color: var(--gold); }
+.option-btn:disabled { opacity: .4; cursor: not-allowed; }
+.option-btn:disabled:hover { border-color: rgba(243,236,225,.25); }
 .option-btn.selected {
   background: var(--gold);
   border-color: var(--gold);
