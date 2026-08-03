@@ -1,2 +1,6 @@
 name = "unique-barber"
 pages_build_output_dir = "."
+
+[[kv_namespaces]]
+binding = "BOOKINGS_KV"
+id = "21903e5c22624ab89385cfe418580e5d"
