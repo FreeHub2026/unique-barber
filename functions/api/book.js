@@ -11,7 +11,7 @@ export async function onRequestPost({ request, env }) {
   }
 
   const { date, time, barber, serviceId, customerName, customerPhone } = body || {};
-  const config = await loadConfig(request);
+  const config = await loadConfig(request, env);
 
   if (!isValidDate(date)) return json({ error: "Datë e pavlefshme." }, 400);
   if (!isValidTime(time)) return json({ error: "Orë e pavlefshme." }, 400);

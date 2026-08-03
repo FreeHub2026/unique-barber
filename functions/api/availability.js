@@ -12,7 +12,7 @@ export async function onRequestGet({ request, env }) {
     return json({ error: "Datë e pavlefshme." }, 400);
   }
 
-  const config = await loadConfig(request);
+  const config = await loadConfig(request, env);
   const raw = await env.BOOKINGS_KV.get(kvKeyForDate(date));
   const entries = raw ? JSON.parse(raw) : [];
 

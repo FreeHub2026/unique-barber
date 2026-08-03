@@ -20,7 +20,7 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "PIN i gabuar." }, 401);
   }
 
-  const config = await loadConfig(request);
+  const config = await loadConfig(request, env);
 
   if (!isValidDate(date)) return json({ error: "Datë e pavlefshme." }, 400);
   if (!isValidTime(time)) return json({ error: "Orë e pavlefshme." }, 400);

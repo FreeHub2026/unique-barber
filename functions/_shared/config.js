@@ -3,9 +3,9 @@
 // just loads it (same-origin static asset, safe to fetch from a Function)
 // and provides small pure helpers used to validate bookings.
 
-export async function loadConfig(request) {
-  const origin = new URL(request.url).origin;
-  const res = await fetch(`${origin}/config.json`);
+export async function loadConfig(request, env) {
+  const configUrl = new URL("/config.json", request.url);
+  const res = await env.ASSETS.fetch(configUrl.toString());
   const config = await res.json();
 
   return {
