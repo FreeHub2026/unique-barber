@@ -1,10 +1,20 @@
 # Unique Barber — Elbasan
 
-Booking website for Unique Barber. Customers pick a service, a barber
-(Endri, Aldo, or no preference), a date and time, and submit a booking —
-payment happens in person at the shop, not online.
+Booking website for Unique Barber, built as a single-screen "app" rather
+than a scrolling page — the homepage is a small menu (Rezervo Tani /
+Produktet / Punët Tona / Rreth Nesh), and booking itself is a one-step-
+at-a-time wizard (services → barber → date & time → your details →
+confirmation), not one long form. Customers pick service(s), a barber
+(Endri, Aldo, or no preference), a date and time, and submit — payment
+happens in person at the shop, not online.
 
-- Endri/Aldo get a **Discord message** the moment someone books.
+- Endri/Aldo get a **Discord message** the moment someone books, including
+  any optional note the customer left (e.g. sensitive skin, allergies,
+  accessibility needs — kept as a free-text courtesy note, not a formal
+  medical form).
+- Customers can **cancel an existing booking** themselves from the "Anulo
+  një rezervim ekzistues" link on the homepage, by entering the same date
+  + phone number they booked with (no account needed).
 - Either barber can flip on **"Jam berber"** mode on the site (PIN-protected)
   to block/unblock a time slot themselves, for walk-ins or in-person
   bookings, so the online calendar stays accurate.
@@ -74,7 +84,7 @@ a **Cloudflare KV** namespace, one JSON list per date (key `bookings:2026-08-10`
 for example). Each entry is either:
 
 ```json
-{ "type": "booking", "barber": "endri", "time": "10:30", "serviceIds": ["qethje", "dyll"], "customerName": "...", "customerPhone": "..." }
+{ "type": "booking", "barber": "endri", "time": "10:30", "serviceIds": ["qethje", "dyll"], "customerName": "...", "customerPhone": "...", "customerNotes": "" }
 { "type": "block",   "barber": "aldo",  "time": "16:00" }
 ```
 
@@ -138,12 +148,11 @@ their paths in `config.json`, e.g.:
 
 ```json
 "galleryPhotos": ["gallery/1.jpg", "gallery/2.jpg", "gallery/3.jpg"],
-"heroPhoto": "gallery/storefront.jpg",
 "workPhotos": ["gallery/cut-1.jpg", "gallery/cut-2.jpg"]
 ```
 
-- `galleryPhotos` / `heroPhoto` — photos of the shop itself ("Barbërhanë" section + hero background)
-- `workPhotos` — photos of finished haircuts ("Punët Tona" section) — a separate list, add client photos here
+- `galleryPhotos` — photos of the shop itself, shown on the "Rreth Nesh" screen
+- `workPhotos` — photos of finished haircuts, shown on the "Punët Tona" screen — a separate list, add client photos here
 
 Both gallery sections open a full-screen click-to-expand view automatically
 (with arrow-key navigation) — no other changes needed. The current look

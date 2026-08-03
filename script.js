@@ -22,7 +22,8 @@ const state = {
 
 document.addEventListener("DOMContentLoaded", async () => {
   wireIntro();
-  wireScrollReveal();
+  wireNavigation();
+  wireBarberPinModal();
 
   const res = await fetch("config.json");
   CONFIG = await res.json();
@@ -31,14 +32,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderServiceOptions();
   renderProducts();
   renderBarberOptions();
-  setupDateInput();
+  setupDateInputs();
   updateOpenStatus();
   setInterval(updateOpenStatus, 60 * 1000);
   wireBookingButton();
-  wireBarberMode();
+  wireCancelFlow();
 });
 
-/* ---------- Intro & scroll reveal ---------- */
+/* ---------- Intro ---------- */
 
 function wireIntro() {
   const overlay = document.getElementById("intro-overlay");
@@ -60,25 +61,132 @@ function wireIntro() {
   }, 1800);
 }
 
-function wireScrollReveal() {
-  const sections = document.querySelectorAll(".section");
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* ---------- Screen router ---------- */
 
-  if (reduceMotion || !("IntersectionObserver" in window)) {
-    sections.forEach(s => s.classList.add("revealed"));
-    return;
+let screenHistory = [];
+
+function showScreen(name) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  const target = document.querySelector(`.screen[data-screen="${name}"]`);
+  if (!target) return;
+  target.classList.add("active");
+  window.scrollTo({ top: 0, behavior: "auto" });
+  onScreenEnter(name);
+}
+
+function goto(name, { reset = false } = {}) {
+  const current = document.querySelector(".screen.active")?.dataset.screen;
+  if (reset) {
+    screenHistory = [];
+  } else if (current && current !== name) {
+    screenHistory.push(current);
+  }
+  showScreen(name);
+}
+
+function goBack() {
+  const prev = screenHistory.pop() || "home";
+  showScreen(prev);
+}
+
+function wireNavigation() {
+  document.querySelectorAll("[data-goto]:not([data-manual])").forEach(el => {
+    el.addEventListener("click", () => goto(el.dataset.goto, { reset: el.hasAttribute("data-reset") }));
+  });
+  document.querySelectorAll("[data-back]").forEach(el => {
+    el.addEventListener("click", goBack);
+  });
+
+  document.getElementById("services-next").addEventListener("click", () => {
+    if (!state.services.length) {
+      updateServiceTotal(); // shows the "pick at least one" hint
+      return;
+    }
+    goto("wizard-barber");
+  });
+
+  document.getElementById("barber-next").addEventListener("click", () => {
+    const err = document.getElementById("barber-error");
+    if (!state.barber) {
+      err.textContent = "Zgjidh një berber.";
+      err.classList.remove("hidden");
+      return;
+    }
+    err.classList.add("hidden");
+    goto("wizard-datetime");
+  });
+
+  document.getElementById("datetime-next").addEventListener("click", () => {
+    const err = document.getElementById("datetime-error");
+    if (!state.time) {
+      err.textContent = "Zgjidh një orë.";
+      err.classList.remove("hidden");
+      return;
+    }
+    err.classList.add("hidden");
+    goto("wizard-details");
+  });
+
+  document.getElementById("datetime-done").addEventListener("click", () => {
+    exitBarberMode();
+    goto("about", { reset: true });
+  });
+
+  document.getElementById("confirm-home-btn").addEventListener("click", () => {
+    resetBookingState();
+    goto("home", { reset: true });
+  });
+}
+
+function onScreenEnter(name) {
+  if (name === "wizard-barber") {
+    const title = document.getElementById("barber-screen-title");
+    const progress = document.getElementById("barber-progress");
+    const under10Wrap = document.getElementById("under-10-wrap");
+    if (state.barberMode) {
+      title.textContent = "Për Cilin Berber?";
+      progress.textContent = "Bllokim Ore";
+      under10Wrap.classList.add("hidden");
+    } else {
+      title.textContent = "Zgjidh Berberin";
+      progress.textContent = "Hapi 2 nga 4";
+      under10Wrap.classList.remove("hidden");
+    }
   }
 
-  sections.forEach(s => s.classList.add("reveal"));
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("revealed");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
-  sections.forEach(s => observer.observe(s));
+  if (name === "wizard-datetime") {
+    const title = document.getElementById("datetime-screen-title");
+    const progress = document.getElementById("datetime-progress");
+    if (state.barberMode) {
+      title.textContent = "Blloko / Zhblloko Orë";
+      progress.textContent = "Bllokim Ore";
+    } else {
+      title.textContent = "Zgjidh Datën & Orën";
+      progress.textContent = "Hapi 3 nga 4";
+    }
+    refreshTimeGrid();
+  }
+
+  if (name === "cancel") {
+    document.getElementById("cancel-date").min = localDateString(new Date());
+  }
+}
+
+function resetBookingState() {
+  state.services = [];
+  state.barber = null;
+  state.date = null;
+  state.time = null;
+
+  document.querySelectorAll("#service-options .option-btn").forEach(b => b.classList.remove("selected"));
+  document.querySelectorAll("#barber-options .option-btn").forEach(b => { b.classList.remove("selected"); b.disabled = false; });
+  document.getElementById("under-10-check").checked = false;
+  document.getElementById("booking-date").value = "";
+  document.getElementById("customer-name").value = "";
+  document.getElementById("customer-phone").value = "";
+  document.getElementById("customer-notes").value = "";
+  updateServiceTotal();
+  showFeedback("", "");
 }
 
 /* ---------- Render content from CONFIG ---------- */
@@ -91,11 +199,7 @@ function renderStaticContent() {
   const phoneLink = document.getElementById("footer-phone");
   phoneLink.href = telHref;
   phoneLink.textContent = CONFIG.phoneDisplay;
-  document.getElementById("hero-call").href = telHref;
-
-  if (CONFIG.heroPhoto) {
-    document.getElementById("hero-photo").style.backgroundImage = `url("${CONFIG.heroPhoto}")`;
-  }
+  document.getElementById("header-call").href = telHref;
 
   const socialWrap = document.getElementById("social-links");
   const icons = { instagram: "📷", facebook: "📘", tiktok: "🎵" };
@@ -119,8 +223,6 @@ function renderStaticContent() {
     reviewsLink.href = CONFIG.googleReviewsUrl;
     reviewsLink.classList.remove("hidden");
   }
-
-  document.getElementById("services-grid").dataset.rendered = "";
 }
 
 function renderPhotoGrid(gridId, noteId, photos) {
@@ -183,7 +285,6 @@ function wireLightbox() {
 
 function renderServiceOptions() {
   const grid = document.getElementById("service-options");
-  const displayGrid = document.getElementById("services-grid");
   CONFIG.services.forEach(svc => {
     const btn = document.createElement("button");
     btn.type = "button";
@@ -200,14 +301,8 @@ function renderServiceOptions() {
         btn.classList.remove("selected");
       }
       updateServiceTotal();
-      refreshTimeGrid();
     });
     grid.appendChild(btn);
-
-    const card = document.createElement("div");
-    card.className = "service-card";
-    card.innerHTML = `<h3>${svc.name}</h3><div class="service-price">${svc.price}<span> Lekë</span></div>`;
-    displayGrid.appendChild(card);
   });
 }
 
@@ -219,7 +314,12 @@ function parsePriceRange(price) {
 
 function updateServiceTotal() {
   const totalEl = document.getElementById("service-total");
-  if (!state.services.length) { totalEl.textContent = ""; return; }
+  if (!state.services.length) {
+    totalEl.textContent = "Zgjidh të paktën një shërbim.";
+    totalEl.classList.add("error-text");
+    return;
+  }
+  totalEl.classList.remove("error-text");
   let lo = 0, hi = 0;
   state.services.forEach(svc => {
     const [l, h] = parsePriceRange(svc.price);
@@ -254,7 +354,6 @@ function renderBarberOptions() {
       state.barber = b.id;
       [...grid.children].forEach(c => c.classList.remove("selected"));
       btn.classList.add("selected");
-      refreshTimeGrid();
     });
     grid.appendChild(btn);
   });
@@ -356,7 +455,7 @@ function updateOpenStatus() {
   dotEl.classList.toggle("closed", !isOpen);
 }
 
-/* ---------- Date input ---------- */
+/* ---------- Date inputs ---------- */
 
 function localDateString(d) {
   // Local calendar date as YYYY-MM-DD (not UTC — toISOString() would drift
@@ -367,7 +466,7 @@ function localDateString(d) {
   return `${y}-${m}-${day}`;
 }
 
-function setupDateInput() {
+function setupDateInputs() {
   const input = document.getElementById("booking-date");
   input.min = localDateString(new Date());
   input.addEventListener("change", () => {
@@ -392,6 +491,10 @@ async function fetchAvailability(date) {
 
 async function refreshTimeGrid() {
   const wrap = document.getElementById("time-slots");
+  const nextBtn = document.getElementById("datetime-next");
+  const doneBtn = document.getElementById("datetime-done");
+  nextBtn.classList.toggle("hidden", state.barberMode);
+  doneBtn.classList.toggle("hidden", !state.barberMode);
 
   if (!state.date) {
     wrap.innerHTML = `<p class="hint-text">Zgjidh një datë për të parë orët e lira.</p>`;
@@ -444,6 +547,7 @@ async function refreshTimeGrid() {
           state.time = slot;
           [...wrap.children].forEach(c => c.classList.remove("selected"));
           btn.classList.add("selected");
+          document.getElementById("datetime-error").classList.add("hidden");
         });
       }
     }
@@ -462,9 +566,9 @@ function wireBookingButton() {
 }
 
 async function submitBooking() {
-  const feedback = document.getElementById("booking-feedback");
   const name = document.getElementById("customer-name").value.trim();
   const phone = document.getElementById("customer-phone").value.trim();
+  const notes = document.getElementById("customer-notes").value.trim();
 
   if (!state.services.length) return showFeedback("Zgjidh të paktën një shërbim.", "error");
   if (!state.barber) return showFeedback("Zgjidh një berber.", "error");
@@ -487,20 +591,23 @@ async function submitBooking() {
         barber: state.barber,
         serviceIds: state.services.map(s => s.id),
         customerName: name,
-        customerPhone: phone
+        customerPhone: phone,
+        customerNotes: notes
       })
     });
     const data = await res.json();
 
     if (!res.ok) {
       showFeedback(data.error || "Ora u zu ndërkohë, zgjidh një tjetër.", "error");
-      refreshTimeGrid();
+      goto("wizard-datetime");
       return;
     }
 
     const barberName = CONFIG.barbers.find(b => b.id === data.barber)?.name || data.barber;
-    showFeedback(`Faleminderit, ${name}! Rezervimi u konfirmua te ${barberName}, më ${state.date} në ${state.time}.`, "success");
-    resetBookingForm();
+    document.getElementById("confirm-message").textContent =
+      `Faleminderit, ${name}! Rezervimi u konfirmua te ${barberName}, më ${state.date} në ${state.time}.`;
+    showFeedback("", "");
+    goto("wizard-confirm", { reset: true });
   } catch (e) {
     console.error(e);
     showFeedback("Diçka shkoi gabim. Provo përsëri ose na telefono.", "error");
@@ -515,62 +622,65 @@ function showFeedback(msg, type) {
   feedback.className = "booking-feedback" + (type ? " " + type : "");
 }
 
-function resetBookingForm() {
-  state.time = null;
-  document.getElementById("customer-name").value = "";
-  document.getElementById("customer-phone").value = "";
-  refreshTimeGrid();
-}
-
 /* ---------- Barber mode (PIN-protected slot blocking) ---------- */
 
-function wireBarberMode() {
+function wireBarberPinModal() {
   const toggleBtn = document.getElementById("barber-mode-btn");
   const gate = document.getElementById("barber-pin-gate");
   const pinInput = document.getElementById("barber-pin-input");
   const pinSubmit = document.getElementById("barber-pin-submit");
+  const pinCancel = document.getElementById("barber-pin-cancel");
   const pinError = document.getElementById("barber-pin-error");
 
   toggleBtn.addEventListener("click", () => {
     if (state.barberMode) {
-      state.barberMode = false;
-      state.pin = null;
-      sessionStorage.removeItem("ub_pin");
-      toggleBtn.textContent = "Jam berber — dua të bllokoj një orë";
-      gate.classList.add("hidden");
-      refreshTimeGrid();
+      exitBarberMode();
       return;
     }
     if (state.pin) {
-      state.barberMode = true;
-      toggleBtn.textContent = "Dil nga modaliteti berber";
-      refreshTimeGrid();
+      enterBarberMode();
       return;
     }
+    pinInput.value = "";
+    pinError.classList.add("hidden");
     gate.classList.remove("hidden");
+    pinInput.focus();
   });
+
+  pinCancel.addEventListener("click", () => gate.classList.add("hidden"));
 
   pinSubmit.addEventListener("click", () => {
     const pin = pinInput.value.trim();
     if (!pin) return;
     state.pin = pin;
-    state.barberMode = true;
     sessionStorage.setItem("ub_pin", pin);
     gate.classList.add("hidden");
     pinError.classList.add("hidden");
-    toggleBtn.textContent = "Dil nga modaliteti berber";
-    if (!state.barber) {
-      // In barber mode we need a specific barber selected (not "any") to block their slots.
-      const firstBarberBtn = document.querySelector("#barber-options .option-btn");
-      firstBarberBtn?.click();
-    }
-    refreshTimeGrid();
+    enterBarberMode();
   });
+}
+
+function enterBarberMode() {
+  state.barberMode = true;
+  document.getElementById("barber-mode-btn").textContent = "Dil nga modaliteti berber";
+  if (!state.barber) {
+    const firstBarberBtn = document.querySelector("#barber-options .option-btn");
+    firstBarberBtn?.click();
+  }
+  goto("wizard-barber");
+}
+
+function exitBarberMode() {
+  state.barberMode = false;
+  state.pin = null;
+  sessionStorage.removeItem("ub_pin");
+  document.getElementById("barber-mode-btn").textContent = "Jam berber — dua të bllokoj një orë";
 }
 
 async function handleBlockToggle(time, isCurrentlyBlocked) {
   if (!state.date || !state.barber || state.barber === "any") {
-    showFeedback("Zgjidh një berber specifik (jo 'Pa preferencë') për të bllokuar orë.", "error");
+    document.getElementById("datetime-error").textContent = "Zgjidh një berber specifik (jo 'Pa preferencë') për të bllokuar orë.";
+    document.getElementById("datetime-error").classList.remove("hidden");
     return;
   }
   try {
@@ -586,23 +696,99 @@ async function handleBlockToggle(time, isCurrentlyBlocked) {
       })
     });
     if (res.status === 401) {
+      exitBarberMode();
       document.getElementById("barber-pin-error").classList.remove("hidden");
-      state.pin = null;
-      sessionStorage.removeItem("ub_pin");
-      state.barberMode = false;
-      document.getElementById("barber-mode-btn").textContent = "Jam berber — dua të bllokoj një orë";
       document.getElementById("barber-pin-gate").classList.remove("hidden");
       refreshTimeGrid();
       return;
     }
     const data = await res.json();
     if (!res.ok) {
-      showFeedback(data.error || "Nuk u krye dot veprimi.", "error");
+      document.getElementById("datetime-error").textContent = data.error || "Nuk u krye dot veprimi.";
+      document.getElementById("datetime-error").classList.remove("hidden");
       return;
     }
+    document.getElementById("datetime-error").classList.add("hidden");
     refreshTimeGrid();
   } catch (e) {
     console.error(e);
-    showFeedback("Diçka shkoi gabim.", "error");
+    document.getElementById("datetime-error").textContent = "Diçka shkoi gabim.";
+    document.getElementById("datetime-error").classList.remove("hidden");
+  }
+}
+
+/* ---------- Cancel an existing booking ---------- */
+
+function wireCancelFlow() {
+  document.getElementById("cancel-search-btn").addEventListener("click", searchCancelBooking);
+}
+
+async function searchCancelBooking() {
+  const date = document.getElementById("cancel-date").value;
+  const phone = document.getElementById("cancel-phone").value.trim();
+  const results = document.getElementById("cancel-results");
+
+  if (!date || !phone) {
+    results.innerHTML = `<p class="hint-text">Vendos datën dhe numrin e telefonit.</p>`;
+    return;
+  }
+
+  results.innerHTML = `<p class="hint-text">Duke kërkuar…</p>`;
+
+  try {
+    const res = await fetch("/api/cancel", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ date, phone, action: "find" })
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      results.innerHTML = `<p class="hint-text">${data.error || "Diçka shkoi gabim."}</p>`;
+      return;
+    }
+    if (!data.bookings.length) {
+      results.innerHTML = `<p class="hint-text">S'u gjet asnjë rezervim me këto të dhëna.</p>`;
+      return;
+    }
+
+    results.innerHTML = "";
+    data.bookings.forEach(b => {
+      const item = document.createElement("div");
+      item.className = "cancel-item";
+      item.innerHTML = `
+        <div class="cancel-item-info">
+          <p class="cancel-item-time">${b.time}</p>
+          <p class="cancel-item-detail">${b.barberName} · ${b.services.join(", ")}</p>
+        </div>
+        <button type="button" class="cancel-item-cancel-btn">Anulo</button>
+      `;
+      item.querySelector(".cancel-item-cancel-btn").addEventListener("click", () =>
+        confirmCancelBooking(date, phone, b.time, b.barber, item)
+      );
+      results.appendChild(item);
+    });
+  } catch (e) {
+    console.error(e);
+    results.innerHTML = `<p class="hint-text">Diçka shkoi gabim. Provo përsëri ose na telefono.</p>`;
+  }
+}
+
+async function confirmCancelBooking(date, phone, time, barber, itemEl) {
+  try {
+    const res = await fetch("/api/cancel", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ date, phone, time, barber, action: "cancel" })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Nuk u anulua dot rezervimi.");
+      return;
+    }
+    itemEl.innerHTML = `<p class="hint-text">Rezervimi u anulua.</p>`;
+  } catch (e) {
+    console.error(e);
+    alert("Diçka shkoi gabim. Provo përsëri ose na telefono.");
   }
 }

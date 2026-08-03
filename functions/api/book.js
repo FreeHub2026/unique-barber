@@ -10,7 +10,7 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "Kërkesë e pavlefshme." }, 400);
   }
 
-  const { date, time, barber, serviceIds, customerName, customerPhone } = body || {};
+  const { date, time, barber, serviceIds, customerName, customerPhone, customerNotes } = body || {};
   const config = await loadConfig(request, env);
 
   if (!isValidDate(date)) return json({ error: "Datë e pavlefshme." }, 400);
@@ -66,6 +66,7 @@ export async function onRequestPost({ request, env }) {
     time,
     customerName: String(customerName).trim(),
     customerPhone: String(customerPhone).trim(),
+    customerNotes: customerNotes ? String(customerNotes).trim().slice(0, 500) : "",
     createdAt: new Date().toISOString()
   };
   entries.push(entry);
@@ -109,7 +110,8 @@ async function notifyDiscord(env, config, entry, date, barberId) {
     `Shërbimet: ${serviceLines}\n` +
     `Data: ${date} ora ${entry.time}\n` +
     `Klienti: ${entry.customerName}\n` +
-    `Telefoni: ${entry.customerPhone}`;
+    `Telefoni: ${entry.customerPhone}` +
+    (entry.customerNotes ? `\nShënim: ${entry.customerNotes}` : "");
 
   try {
     await fetch(webhookUrl, {
