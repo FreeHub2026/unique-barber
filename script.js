@@ -21,6 +21,9 @@ const state = {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
+  wireIntro();
+  wireScrollReveal();
+
   const res = await fetch("config.json");
   CONFIG = await res.json();
 
@@ -34,6 +37,49 @@ document.addEventListener("DOMContentLoaded", async () => {
   wireBookingButton();
   wireBarberMode();
 });
+
+/* ---------- Intro & scroll reveal ---------- */
+
+function wireIntro() {
+  const overlay = document.getElementById("intro-overlay");
+  if (!overlay) return;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const alreadySeen = sessionStorage.getItem("ub_intro_seen");
+
+  if (reduceMotion || alreadySeen) {
+    overlay.remove();
+    return;
+  }
+
+  sessionStorage.setItem("ub_intro_seen", "1");
+  document.body.classList.add("intro-locked");
+  setTimeout(() => {
+    overlay.classList.add("intro-hide");
+    document.body.classList.remove("intro-locked");
+    setTimeout(() => overlay.remove(), 1000);
+  }, 1800);
+}
+
+function wireScrollReveal() {
+  const sections = document.querySelectorAll(".section");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    sections.forEach(s => s.classList.add("revealed"));
+    return;
+  }
+
+  sections.forEach(s => s.classList.add("reveal"));
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("revealed");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  sections.forEach(s => observer.observe(s));
+}
 
 /* ---------- Render content from CONFIG ---------- */
 
