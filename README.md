@@ -4,7 +4,7 @@ Booking website for Unique Barber. Customers pick a service, a barber
 (Endri, Aldo, or no preference), a date and time, and submit a booking —
 payment happens in person at the shop, not online.
 
-- Endri/Aldo get a **Telegram message** the moment someone books.
+- Endri/Aldo get a **Discord message** the moment someone books.
 - Either barber can flip on **"Jam berber"** mode on the site (PIN-protected)
   to block/unblock a time slot themselves, for walk-ins or in-person
   bookings, so the online calendar stays accurate.
@@ -98,21 +98,18 @@ for example). Each entry is either:
 **Settings → Environment variables → Add variable** (mark it **Encrypt**):
 - `BARBER_PIN` = a 4–6 digit code you choose, e.g. `2580`. Give this only to Endri and Aldo.
 
-### 4. Set up the Telegram bot for notifications
+### 4. Set up the Discord webhook for notifications
 
-1. In Telegram, message **@BotFather** → `/newbot` → follow the prompts → it gives you a **bot token** (looks like `123456:ABC-...`).
-2. Decide who should get notified:
-   - Just you/one person: open a chat with your new bot and send it any message (e.g. "hi").
-   - Both Endri and Aldo: create a Telegram **group**, add the bot to it, send any message in the group.
-3. Get the **chat id**: open this URL in a browser (replace `<TOKEN>`):
-   `https://api.telegram.org/bot<TOKEN>/getUpdates`
-   Send another message first if you see an empty result, then refresh. Look for `"chat":{"id": ...}` — that number (can be negative for groups) is your chat id.
-4. Back in Cloudflare Pages **Settings → Environment variables**, add:
-   - `TELEGRAM_BOT_TOKEN` = the token from step 1 (mark **Encrypt**)
-   - `TELEGRAM_CHAT_ID` = the id from step 3
+1. Open Discord (create a free account/server if you don't have one already).
+2. Create a channel for bookings, e.g. `#rezervime` (or reuse an existing one).
+3. Right-click the channel → **Edit Channel** → **Integrations** → **Webhooks** → **New Webhook**.
+4. Click the new webhook → **Copy Webhook URL** (looks like `https://discord.com/api/webhooks/123.../abcDEF...`).
+5. Make sure Endri and Aldo are members of that server/channel so they see the notifications.
+6. Back in Cloudflare Pages **Settings → Environment variables**, add:
+   - `DISCORD_WEBHOOK_URL` = the URL from step 4 (mark **Encrypt** — anyone with this URL can post to the channel)
 
-Once these 4 things are set (KV binding, `BARBER_PIN`, `TELEGRAM_BOT_TOKEN`,
-`TELEGRAM_CHAT_ID`), redeploy and bookings will start working end-to-end.
+Once these 3 things are set (KV binding, `BARBER_PIN`, `DISCORD_WEBHOOK_URL`),
+redeploy and bookings will start working end-to-end.
 
 ### Can a regular customer fake being a barber and block times?
 
@@ -130,9 +127,9 @@ npx wrangler pages dev . --kv BOOKINGS_KV
 ```
 
 This serves the site and functions locally with a local KV store. Set
-`BARBER_PIN`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` via a `.dev.vars`
-file in this folder (one `KEY=value` per line) if you want to test
-notifications locally too — `.dev.vars` should **not** be committed to git.
+`BARBER_PIN` and `DISCORD_WEBHOOK_URL` via a `.dev.vars` file in this
+folder (one `KEY=value` per line) if you want to test notifications
+locally too — `.dev.vars` should **not** be committed to git.
 
 ## Adding real store photos later
 

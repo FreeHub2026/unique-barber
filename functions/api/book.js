@@ -71,7 +71,7 @@ export async function onRequestPost({ request, env }) {
   entries.push(entry);
   await env.BOOKINGS_KV.put(key, JSON.stringify(entries));
 
-  await notifyTelegram(env, config, entry, date, assignedBarber);
+  await notifyDiscord(env, config, entry, date, assignedBarber);
 
   return json({ ok: true, barber: assignedBarber }, 200);
 }
@@ -94,18 +94,17 @@ function isInThePast(date, time) {
   return h * 60 + m < nowMinutes - 5;
 }
 
-async function notifyTelegram(env, config, entry, date, barberId) {
-  const token = env.TELEGRAM_BOT_TOKEN;
-  const chatId = env.TELEGRAM_CHAT_ID;
-  if (!token || !chatId) {
-    console.error("Telegram not configured — set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID.");
+async function notifyDiscord(env, config, entry, date, barberId) {
+  const webhookUrl = env.DISCORD_WEBHOOK_URL;
+  if (!webhookUrl) {
+    console.error("Discord not configured — set DISCORD_WEBHOOK_URL.");
     return;
   }
   const services = entry.serviceIds.map(id => config.servicesById[id]);
   const serviceLines = services.map(s => `${s.name} (${s.price} Lekë)`).join(", ");
   const barberName = config.barbers.find(b => b.id === barberId)?.name || barberId;
-  const text =
-    `✂️ Rezervim i ri!\n` +
+  const content =
+    `✂️ **Rezervim i ri!**\n` +
     `Berberi: ${barberName}\n` +
     `Shërbimet: ${serviceLines}\n` +
     `Data: ${date} ora ${entry.time}\n` +
@@ -113,13 +112,13 @@ async function notifyTelegram(env, config, entry, date, barberId) {
     `Telefoni: ${entry.customerPhone}`;
 
   try {
-    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    await fetch(webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chatId, text })
+      body: JSON.stringify({ content })
     });
   } catch (e) {
-    console.error("Telegram notify failed", e);
+    console.error("Discord notify failed", e);
   }
 }
 
