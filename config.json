@@ -19,7 +19,19 @@
 
   "services": [
     { "id": "qethje", "name": "Qethje", "price": 400, "duration": 30 },
-    { "id": "qethje-0-forte", "name": "Qethje me 0 të fortë", "price": 500, "duration": 30 }
+    { "id": "qethje-0-forte", "name": "Qethje me 0 të fortë", "price": 500, "duration": 30 },
+    { "id": "stilim-mjekre", "name": "Stilim Mjekre", "price": 200, "duration": 20 },
+    { "id": "rruajtje", "name": "Rruajtje", "price": 100, "duration": 20 },
+    { "id": "larje-koke", "name": "Larje Koke", "price": 100, "duration": 15 },
+    { "id": "dyll", "name": "Dyll", "price": 100, "duration": 10 },
+    { "id": "trajtim-fytyre", "name": "Trajtim Fytyre", "price": "1500-2000", "duration": 30 },
+    { "id": "krem", "name": "Krem", "price": "100-300", "duration": 10 }
+  ],
+
+  "products": [
+    { "id": "uji", "name": "Uji", "price": 50 },
+    { "id": "kafe", "name": "Kafe", "price": 50 },
+    { "id": "xhel", "name": "Xhelë", "price": "300-500" }
   ],
 
   "hours": {

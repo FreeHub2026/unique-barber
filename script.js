@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   renderStaticContent();
   renderServiceOptions();
+  renderProducts();
   renderBarberOptions();
   setupDateInput();
   updateOpenStatus();
@@ -144,6 +145,16 @@ function renderServiceOptions() {
     card.className = "service-card";
     card.innerHTML = `<h3>${svc.name}</h3><div class="service-price">${svc.price}<span> Lekë</span></div>`;
     displayGrid.appendChild(card);
+  });
+}
+
+function renderProducts() {
+  const grid = document.getElementById("products-grid");
+  (CONFIG.products || []).forEach(product => {
+    const card = document.createElement("div");
+    card.className = "service-card";
+    card.innerHTML = `<h3>${product.name}</h3><div class="service-price">${product.price}<span> Lekë</span></div>`;
+    grid.appendChild(card);
   });
 }
 
