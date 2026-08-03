@@ -141,12 +141,24 @@ their paths in `config.json`, e.g.:
 
 ```json
 "galleryPhotos": ["gallery/1.jpg", "gallery/2.jpg", "gallery/3.jpg"],
-"heroPhoto": "gallery/storefront.jpg"
+"heroPhoto": "gallery/storefront.jpg",
+"workPhotos": ["gallery/cut-1.jpg", "gallery/cut-2.jpg"]
 ```
 
-The gallery section and hero background will pick them up automatically —
-no other changes needed. The current look (black/gold barber theme) was
-designed to hold up well even before real photos are added.
+- `galleryPhotos` / `heroPhoto` — photos of the shop itself ("Barbërhanë" section + hero background)
+- `workPhotos` — photos of finished haircuts ("Punët Tona" section) — a separate list, add client photos here
+
+Both gallery sections open a full-screen click-to-expand view automatically
+(with arrow-key navigation) — no other changes needed. The current look
+(black/gold barber theme) was designed to hold up well even before real
+photos are added.
+
+## Real reviews (not fake ones)
+
+`googleReviewsUrl` in `config.json` controls the "★★★★★ Shiko vlerësimet
+tona në Google" link in the hero — set it to your Google Business profile's
+review link and it'll appear automatically (hidden while empty). This links
+to your real Google reviews rather than showing fabricated testimonials.
 
 If it's easier, you can also upload photos straight from GitHub's web UI:
 open the `gallery` folder in the repo (create it if it doesn't exist yet

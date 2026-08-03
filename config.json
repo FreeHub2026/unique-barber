@@ -44,5 +44,9 @@
   },
 
   "galleryPhotos": [],
-  "heroPhoto": ""
+  "heroPhoto": "",
+
+  "workPhotos": [],
+
+  "googleReviewsUrl": ""
 }

@@ -64,37 +64,49 @@ function renderStaticContent() {
     socialWrap.appendChild(a);
   });
 
-  const galleryGrid = document.getElementById("gallery-grid");
-  const galleryNote = document.getElementById("gallery-note");
-  if (CONFIG.galleryPhotos.length) {
-    galleryNote.classList.add("hidden");
-    CONFIG.galleryPhotos.forEach((src, i) => {
-      const figure = document.createElement("figure");
-      figure.tabIndex = 0;
-      figure.setAttribute("role", "button");
-      figure.setAttribute("aria-label", `Shiko foton ${i + 1} të madhe`);
-      const img = document.createElement("img");
-      img.src = src;
-      img.alt = CONFIG.shopName;
-      img.loading = "lazy";
-      figure.appendChild(img);
-      figure.addEventListener("click", () => openLightbox(i));
-      figure.addEventListener("keydown", e => {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLightbox(i); }
-      });
-      galleryGrid.appendChild(figure);
-    });
-    wireLightbox();
+  renderPhotoGrid("gallery-grid", "gallery-note", CONFIG.galleryPhotos);
+  renderPhotoGrid("work-grid", "work-note", CONFIG.workPhotos || []);
+  wireLightbox();
+
+  if (CONFIG.googleReviewsUrl) {
+    const reviewsLink = document.getElementById("google-reviews-link");
+    reviewsLink.href = CONFIG.googleReviewsUrl;
+    reviewsLink.classList.remove("hidden");
   }
 
   document.getElementById("services-grid").dataset.rendered = "";
 }
 
+function renderPhotoGrid(gridId, noteId, photos) {
+  const grid = document.getElementById(gridId);
+  const note = document.getElementById(noteId);
+  if (!photos.length) return;
+  note.classList.add("hidden");
+  photos.forEach((src, i) => {
+    const figure = document.createElement("figure");
+    figure.tabIndex = 0;
+    figure.setAttribute("role", "button");
+    figure.setAttribute("aria-label", `Shiko foton ${i + 1} të madhe`);
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = CONFIG.shopName;
+    img.loading = "lazy";
+    figure.appendChild(img);
+    figure.addEventListener("click", () => openLightbox(photos, i));
+    figure.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLightbox(photos, i); }
+    });
+    grid.appendChild(figure);
+  });
+}
+
+let lightboxPhotos = [];
 let lightboxIndex = 0;
 
-function openLightbox(index) {
+function openLightbox(photos, index) {
+  lightboxPhotos = photos;
   lightboxIndex = index;
-  document.getElementById("lightbox-img").src = CONFIG.galleryPhotos[index];
+  document.getElementById("lightbox-img").src = photos[index];
   document.getElementById("lightbox").classList.remove("hidden");
 }
 
@@ -103,9 +115,8 @@ function closeLightbox() {
 }
 
 function stepLightbox(delta) {
-  const photos = CONFIG.galleryPhotos;
-  lightboxIndex = (lightboxIndex + delta + photos.length) % photos.length;
-  document.getElementById("lightbox-img").src = photos[lightboxIndex];
+  lightboxIndex = (lightboxIndex + delta + lightboxPhotos.length) % lightboxPhotos.length;
+  document.getElementById("lightbox-img").src = lightboxPhotos[lightboxIndex];
 }
 
 function wireLightbox() {
