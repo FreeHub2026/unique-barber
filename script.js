@@ -3,32 +3,40 @@
    -------------------------------------------------------------------------
    Everything you (Endri/Aldo) would want to change — phone number, social
    links, services/prices, barbers, opening hours, gallery photos, the
-   story text — lives in ONE place: config.json, next to this file. Fields
-   ending in "En" (e.g. nameEn, textEn) are the English version — leave
-   them blank and the site just shows the Albanian text for everyone.
+   story text, reviews — lives in ONE place: config.json, next to this
+   file. Fields ending in "En" (e.g. nameEn, textEn) are the English
+   version — leave them blank and the site just shows the Albanian text.
    ========================================================================= */
 
 const I18N = {
   sq: {
+    navServices: "Shërbimet",
+    navPricing: "Çmimorja",
+    navGallery: "Punët Tona",
+    navProducts: "Produktet",
+    navAbout: "Rreth Nesh",
     heroBadge: "Përsosmëri · Stil · Detaje",
     heroTitle: "Stili Fillon<br>Këtu.",
-    heroSub: "Lineup të përsosur, trajtime fytyre të kujdesshme dhe produkte premium — nga berberët më me përvojë në Elbasan.",
+    heroSub: "Prerje flokësh profesionale, stilim mjekre dhe trajtime fytyre premium — nga berberët më me përvojë në Elbasan.",
     bookNow: "Rezervo Tani",
+    seeServicesBtn: "Shiko Shërbimet",
     googleReviews: "★★★★★ Shiko vlerësimet tona në Google",
     whyUsTitle: "Pse Ne?",
-    tilePricing: "Çmimorja",
-    tileProducts: "Produktet",
-    tileWork: "Punët Tona",
-    tileAbout: "Rreth Nesh",
+    ourBarbersTitle: "Berberët Tanë",
+    bookThisBtn: "Rezervo",
+    chooseBarberBtn: "Zgjidh Berberin",
+    productInStoreNote: "Gjendet në barbërhanë",
     cancelLink: "Anulo një rezervim ekzistues",
-    step1of4: "Hapi 1 nga 4",
-    step2of4: "Hapi 2 nga 4",
-    step3of4: "Hapi 3 nga 4",
-    step4of4: "Hapi 4 nga 4",
+    step1of5: "Hapi 1 nga 5",
+    step2of5: "Hapi 2 nga 5",
+    step3of5: "Hapi 3 nga 5",
+    step4of5: "Hapi 4 nga 5",
+    step5of5: "Hapi 5 nga 5",
     chooseServices: "Zgjidh Shërbimet",
     chooseServicesSub: "Zgjidh një ose më shumë.",
     continueBtn: "Vazhdo",
     doneBtn: "Përfundo",
+    reviewBookingBtn: "Shiko Përmbledhjen",
     under10Label: "Klienti është nën 10 vjeç",
     under10Hint: "(caktohet automatikisht te Endri)",
     barberScreenTitleBooking: "Zgjidh Berberin",
@@ -47,6 +55,12 @@ const I18N = {
     placeholderNotes: "Ka diçka që duhet ta dijë berberi? (p.sh. lëkurë e ndjeshme, nishane, aftësi të kufizuara, etj. — opsionale)",
     confirmBooking: "Konfirmo Rezervimin",
     payNote: "💵 Pagesa bëhet në barbërhanë, kur vjen për termin.",
+    summaryTitle: "Përmbledhja e Rezervimit",
+    summaryService: "Shërbimi",
+    summaryBarber: "Berberi",
+    summaryDate: "Data",
+    summaryTime: "Ora",
+    summaryPrice: "Çmimi",
     bookingConfirmedTitle: "Rezervimi u Konfirmua",
     bookingConfirmedMsg: "Faleminderit, {name}! Rezervimi u konfirmua te {barber}, më {date} në {time}.",
     backHome: "Kthehu në Faqen Kryesore",
@@ -62,6 +76,8 @@ const I18N = {
     hoursLine2: "Pushim dreke: 14:00 – 16:00",
     hoursLine3: "E Mërkurë: Mbyllur",
     followUsLabel: "Na Ndiqni",
+    reviewsTitle: "Çfarë Thonë Klientët",
+    reviewsEmpty: "Së shpejti do të shtojmë vlerësimet tona këtu.",
     barberModeLink: "Jam berber — dua të bllokoj një orë",
     exitBarberModeLink: "Dil nga modaliteti berber",
     cancelTitle: "Anulo Rezervimin",
@@ -100,25 +116,33 @@ const I18N = {
     cancelActionFailed: "Nuk u anulua dot rezervimi."
   },
   en: {
+    navServices: "Services",
+    navPricing: "Price List",
+    navGallery: "Our Work",
+    navProducts: "Products",
+    navAbout: "About Us",
     heroBadge: "Excellence · Style · Detail",
     heroTitle: "Style Starts<br>Here.",
-    heroSub: "Perfect lineups, careful face treatments, and premium products — from Elbasan's most experienced barbers.",
+    heroSub: "Professional haircuts, beard styling, and premium face treatments — from Elbasan's most experienced barbers.",
     bookNow: "Book Now",
+    seeServicesBtn: "See Services",
     googleReviews: "★★★★★ See our Google reviews",
     whyUsTitle: "Why Us?",
-    tilePricing: "Price List",
-    tileProducts: "Products",
-    tileWork: "Our Work",
-    tileAbout: "About Us",
+    ourBarbersTitle: "Our Barbers",
+    bookThisBtn: "Book",
+    chooseBarberBtn: "Choose This Barber",
+    productInStoreNote: "Available in-store",
     cancelLink: "Cancel an existing booking",
-    step1of4: "Step 1 of 4",
-    step2of4: "Step 2 of 4",
-    step3of4: "Step 3 of 4",
-    step4of4: "Step 4 of 4",
+    step1of5: "Step 1 of 5",
+    step2of5: "Step 2 of 5",
+    step3of5: "Step 3 of 5",
+    step4of5: "Step 4 of 5",
+    step5of5: "Step 5 of 5",
     chooseServices: "Choose Your Services",
     chooseServicesSub: "Pick one or more.",
     continueBtn: "Continue",
     doneBtn: "Done",
+    reviewBookingBtn: "Review Booking",
     under10Label: "Customer is under 10 years old",
     under10Hint: "(automatically assigned to Endri)",
     barberScreenTitleBooking: "Choose Your Barber",
@@ -137,6 +161,12 @@ const I18N = {
     placeholderNotes: "Anything the barber should know? (e.g. sensitive skin, moles, accessibility needs, etc. — optional)",
     confirmBooking: "Confirm Booking",
     payNote: "💵 Payment is made at the shop, when you arrive.",
+    summaryTitle: "Booking Summary",
+    summaryService: "Service",
+    summaryBarber: "Barber",
+    summaryDate: "Date",
+    summaryTime: "Time",
+    summaryPrice: "Price",
     bookingConfirmedTitle: "Booking Confirmed",
     bookingConfirmedMsg: "Thank you, {name}! Your booking with {barber} is confirmed for {date} at {time}.",
     backHome: "Back to Home",
@@ -152,6 +182,8 @@ const I18N = {
     hoursLine2: "Lunch break: 2:00 PM – 4:00 PM",
     hoursLine3: "Wednesday: Closed",
     followUsLabel: "Follow Us",
+    reviewsTitle: "What Our Clients Say",
+    reviewsEmpty: "We'll be adding our reviews here soon.",
     barberModeLink: "I'm a barber — I want to block a time",
     exitBarberModeLink: "Exit barber mode",
     cancelTitle: "Cancel Booking",
@@ -222,11 +254,12 @@ function setLanguage(lang) {
   if (CONFIG) {
     renderHighlights();
     renderServiceOptions();
+    renderServiceCards();
     renderProducts();
     renderBarberOptions();
     renderPricingList();
-    renderHomePriceGrid();
     renderStory();
+    renderReviews();
     updateServiceTotal();
     updateOpenStatus();
     refreshTimeGrid();
@@ -256,7 +289,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   wireLanguageToggle();
   wireIntro();
   wireNavigation();
+  wireHamburger();
+  wireSectionNavLinks();
   wireBarberPinModal();
+  document.getElementById("sticky-cta").classList.remove("hidden");
 
   const res = await fetch("config.json");
   CONFIG = await res.json();
@@ -264,10 +300,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderStaticContent();
   renderHighlights();
   renderServiceOptions();
+  renderServiceCards();
   renderProducts();
   renderBarberOptions();
   renderPricingList();
   renderStory();
+  renderReviews();
   setupDateInputs();
   updateOpenStatus();
   setInterval(updateOpenStatus, 60 * 1000);
@@ -297,6 +335,44 @@ function wireIntro() {
   }, 1800);
 }
 
+/* ---------- Header nav (hamburger + section anchor links) ---------- */
+
+function wireHamburger() {
+  const btn = document.getElementById("hamburger-btn");
+  const nav = document.getElementById("mobile-nav");
+  btn.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("open");
+    btn.classList.toggle("open", isOpen);
+    btn.setAttribute("aria-expanded", String(isOpen));
+  });
+  nav.querySelectorAll("a, button").forEach(el => {
+    el.addEventListener("click", () => {
+      nav.classList.remove("open");
+      btn.classList.remove("open");
+      btn.setAttribute("aria-expanded", "false");
+    });
+  });
+}
+
+function wireSectionNavLinks() {
+  document.querySelectorAll('header a[href^="#"]').forEach(link => {
+    link.addEventListener("click", e => {
+      e.preventDefault();
+      const id = link.getAttribute("href").slice(1);
+      goto("home", { reset: true });
+      requestAnimationFrame(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+  });
+  document.querySelectorAll('.hero-actions a[href^="#"]').forEach(link => {
+    link.addEventListener("click", e => {
+      e.preventDefault();
+      document.getElementById(link.getAttribute("href").slice(1))?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+}
+
 /* ---------- Screen router ---------- */
 
 let screenHistory = [];
@@ -307,6 +383,7 @@ function showScreen(name) {
   if (!target) return;
   target.classList.add("active");
   window.scrollTo({ top: 0, behavior: "auto" });
+  document.getElementById("sticky-cta").classList.toggle("hidden", name !== "home");
   onScreenEnter(name);
 }
 
@@ -365,7 +442,28 @@ function wireNavigation() {
 
   document.getElementById("datetime-done").addEventListener("click", () => {
     exitBarberMode();
-    goto("about", { reset: true });
+    goto("home", { reset: true });
+  });
+
+  document.getElementById("details-next").addEventListener("click", () => {
+    const err = document.getElementById("details-error");
+    const name = document.getElementById("customer-name").value.trim();
+    const phone = document.getElementById("customer-phone").value.trim();
+    let msg = "";
+    if (!state.services.length) msg = t("pickAtLeastOneService");
+    else if (!state.barber) msg = t("pickBarberError");
+    else if (!state.date) msg = t("pickDateError");
+    else if (!state.time) msg = t("pickTimeError");
+    else if (!name) msg = t("writeNameError");
+    else if (!phone) msg = t("writePhoneError");
+
+    if (msg) {
+      err.textContent = msg;
+      err.classList.remove("hidden");
+      return;
+    }
+    err.classList.add("hidden");
+    goto("wizard-summary");
   });
 
   document.getElementById("confirm-home-btn").addEventListener("click", () => {
@@ -385,7 +483,7 @@ function onScreenEnter(name) {
       under10Wrap.classList.add("hidden");
     } else {
       title.textContent = t("barberScreenTitleBooking");
-      progress.textContent = t("step2of4");
+      progress.textContent = t("step2of5");
       under10Wrap.classList.remove("hidden");
     }
   }
@@ -398,9 +496,13 @@ function onScreenEnter(name) {
       progress.textContent = t("barberProgressBlocking");
     } else {
       title.textContent = t("datetimeScreenTitleBooking");
-      progress.textContent = t("step3of4");
+      progress.textContent = t("step3of5");
     }
     refreshTimeGrid();
+  }
+
+  if (name === "wizard-summary") {
+    renderSummary();
   }
 
   if (name === "cancel") {
@@ -437,7 +539,18 @@ function renderStaticContent() {
   phoneLink.textContent = CONFIG.phoneDisplay;
   document.getElementById("header-call").href = telHref;
 
+  if (CONFIG.whatsappNumber) {
+    const waLink = document.getElementById("whatsapp-link");
+    waLink.href = `https://wa.me/${CONFIG.whatsappNumber}`;
+    waLink.classList.remove("hidden");
+  }
+
+  if (CONFIG.heroPhoto) {
+    document.getElementById("top").style.backgroundImage = `url("${CONFIG.heroPhoto}")`;
+  }
+
   const socialWrap = document.getElementById("social-links");
+  socialWrap.innerHTML = "";
   const icons = { instagram: "📷", facebook: "📘", tiktok: "🎵" };
   Object.entries(CONFIG.social).forEach(([key, url]) => {
     if (!url) return;
@@ -455,9 +568,8 @@ function renderStaticContent() {
   wireLightbox();
 
   if (CONFIG.googleReviewsUrl) {
-    const reviewsLink = document.getElementById("google-reviews-link");
-    reviewsLink.href = CONFIG.googleReviewsUrl;
-    reviewsLink.classList.remove("hidden");
+    document.getElementById("google-reviews-link").href = CONFIG.googleReviewsUrl;
+    document.getElementById("google-reviews-link").classList.remove("hidden");
   }
 }
 
@@ -471,7 +583,7 @@ function renderPhotoGrid(gridId, noteId, photos) {
   const grid = document.getElementById(gridId);
   const note = document.getElementById(noteId);
   grid.innerHTML = "";
-  if (!photos.length) return;
+  if (!photos.length) { note.classList.remove("hidden"); return; }
   note.classList.add("hidden");
   photos.forEach((src, i) => {
     const figure = document.createElement("figure");
@@ -541,6 +653,8 @@ function renderHighlights() {
   });
 }
 
+/* ---------- Services: wizard picker + rich marketing cards ---------- */
+
 function renderServiceOptions() {
   const grid = document.getElementById("service-options");
   grid.innerHTML = "";
@@ -566,10 +680,48 @@ function renderServiceOptions() {
   });
 }
 
+function renderServiceCards() {
+  const grid = document.getElementById("services-cards-grid");
+  grid.innerHTML = "";
+  CONFIG.services.forEach(svc => {
+    const card = document.createElement("div");
+    card.className = "service-card-rich";
+    card.innerHTML = `
+      <h3>${localized(svc, "name")}</h3>
+      <p class="service-card-desc">${localized(svc, "description") || ""}</p>
+      <div class="service-card-meta">
+        <span class="service-card-price">${svc.price} Lekë</span>
+        <span class="service-card-duration">${svc.duration} min</span>
+      </div>
+      <button type="button" class="btn btn-ghost btn-block">${t("bookThisBtn")}</button>
+    `;
+    card.querySelector("button").addEventListener("click", () => quickBookService(svc));
+    grid.appendChild(card);
+  });
+}
+
+function quickBookService(svc) {
+  if (!state.services.some(s => s.id === svc.id)) {
+    state.services.push(svc);
+  }
+  document.querySelector(`#service-options [data-service-id="${svc.id}"]`)?.classList.add("selected");
+  updateServiceTotal();
+  goto("wizard-barber", { reset: true });
+}
+
 function parsePriceRange(price) {
   if (typeof price === "number") return [price, price];
   const parts = String(price).split("-").map(Number);
   return parts.length === 2 && !isNaN(parts[1]) ? parts : [parts[0], parts[0]];
+}
+
+function totalPriceText(services) {
+  let lo = 0, hi = 0;
+  services.forEach(svc => {
+    const [l, h] = parsePriceRange(svc.price);
+    lo += l; hi += h;
+  });
+  return lo === hi ? `${lo} Lekë` : `${lo}-${hi} Lekë`;
 }
 
 function updateServiceTotal() {
@@ -580,62 +732,52 @@ function updateServiceTotal() {
     return;
   }
   totalEl.classList.remove("error-text");
-  let lo = 0, hi = 0;
-  state.services.forEach(svc => {
-    const [l, h] = parsePriceRange(svc.price);
-    lo += l; hi += h;
-  });
-  const priceText = lo === hi ? `${lo} Lekë` : `${lo}-${hi} Lekë`;
-  totalEl.textContent = t("serviceCountTotal", { count: state.services.length, price: priceText });
+  totalEl.textContent = t("serviceCountTotal", { count: state.services.length, price: totalPriceText(state.services) });
 }
+
+/* ---------- Products ---------- */
 
 function renderProducts() {
   const grid = document.getElementById("products-grid");
   grid.innerHTML = "";
   (CONFIG.products || []).forEach(product => {
     const card = document.createElement("div");
-    card.className = "service-card";
-    card.innerHTML = `<h3>${localized(product, "name")}</h3><div class="service-price">${product.price}<span> Lekë</span></div>`;
+    card.className = "service-card-rich";
+    const media = product.image
+      ? `<img class="product-image" src="${product.image}" alt="${localized(product, "name")}" loading="lazy">`
+      : `<div class="product-image-placeholder">🧴</div>`;
+    card.innerHTML = `
+      ${media}
+      <h3>${localized(product, "name")}</h3>
+      <p class="service-card-desc">${localized(product, "description") || ""}</p>
+      <div class="service-card-meta">
+        <span class="service-card-price">${product.price} Lekë</span>
+      </div>
+      <p class="product-instore-note">${t("productInStoreNote")}</p>
+    `;
     grid.appendChild(card);
   });
 }
 
+/* ---------- Pricing (premium menu list) ---------- */
+
 function renderPricingList() {
-  const servicesList = document.getElementById("pricing-services-list");
-  const productsList = document.getElementById("pricing-products-list");
-  servicesList.innerHTML = "";
-  productsList.innerHTML = "";
-
-  CONFIG.services.forEach(svc => {
-    const row = document.createElement("div");
-    row.className = "price-row";
-    row.innerHTML = `<span class="price-row-name">${localized(svc, "name")}</span><span class="price-row-value">${svc.price} Lekë</span>`;
-    servicesList.appendChild(row);
-  });
-
-  (CONFIG.products || []).forEach(p => {
-    const row = document.createElement("div");
-    row.className = "price-row";
-    row.innerHTML = `<span class="price-row-name">${localized(p, "name")}</span><span class="price-row-value">${p.price} Lekë</span>`;
-    productsList.appendChild(row);
-  });
+  fillMenuList("pricing-services-list", CONFIG.services);
+  fillMenuList("pricing-products-list", CONFIG.products || []);
 }
 
-function renderHomePriceGrid() {
-  fillPriceBoard("home-price-board-services", CONFIG.services);
-  fillPriceBoard("home-price-board-products", CONFIG.products || []);
-}
-
-function fillPriceBoard(containerId, items) {
+function fillMenuList(containerId, items) {
   const container = document.getElementById(containerId);
   container.innerHTML = "";
   items.forEach(item => {
     const row = document.createElement("div");
-    row.className = "price-board-row";
-    row.innerHTML = `<span class="price-board-row-name">${localized(item, "name")}</span><span class="price-board-row-value">${item.price} Lekë</span>`;
+    row.className = "menu-row";
+    row.innerHTML = `<span class="menu-row-name">${localized(item, "name")}</span><span class="menu-row-dots"></span><span class="menu-row-value">${item.price} Lekë</span>`;
     container.appendChild(row);
   });
 }
+
+/* ---------- Barbers ---------- */
 
 function renderBarberOptions() {
   const grid = document.getElementById("barber-options");
@@ -659,19 +801,35 @@ function renderBarberOptions() {
     grid.appendChild(btn);
   });
 
+  const experienceYears = CONFIG.establishedYear ? (new Date().getFullYear() - CONFIG.establishedYear) : null;
+  const experienceText = experienceYears
+    ? (currentLang === "en" ? `${experienceYears}+ years experience` : `${experienceYears}+ vite përvojë`)
+    : "";
+  const defaultSpecialty = currentLang === "en" ? "All-Round Barber" : "Berber i Plotë";
+
   CONFIG.barbers.forEach(b => {
+    const specialty = localized(b, "specialty") || defaultSpecialty;
     const card = document.createElement("div");
     card.className = "barber-card";
     card.innerHTML = `
       <div class="barber-avatar">${b.name[0]}</div>
       <h3>${b.name}</h3>
-      <p>Berber</p>
+      <p class="barber-specialty">${specialty}</p>
+      ${experienceText ? `<p class="barber-experience">${experienceText}</p>` : ""}
       ${b.phone ? `<a class="barber-call" href="tel:+${b.phone}">📞 ${b.name.split(" ")[0]}</a>` : ""}
+      <button type="button" class="btn btn-ghost btn-block">${t("chooseBarberBtn")}</button>
     `;
+    card.querySelector("button").addEventListener("click", () => quickSelectBarber(b.id));
     displayGrid.appendChild(card);
   });
 
   wireUnder10Check(grid);
+}
+
+function quickSelectBarber(barberId) {
+  state.barber = barberId;
+  document.querySelector(`#barber-options [data-barber-id="${barberId}"]`)?.classList.add("selected");
+  goto("wizard-services", { reset: true });
 }
 
 function wireUnder10Check(grid) {
@@ -688,6 +846,40 @@ function wireUnder10Check(grid) {
       buttons.forEach(b => { b.disabled = false; });
     }
   });
+}
+
+/* ---------- Reviews ---------- */
+
+function renderReviews() {
+  const grid = document.getElementById("reviews-grid");
+  const emptyMsg = document.getElementById("reviews-empty");
+  const googleLink = document.getElementById("reviews-google-link");
+  grid.innerHTML = "";
+
+  const reviews = CONFIG.reviews || [];
+  if (reviews.length) {
+    reviews.forEach(r => {
+      const card = document.createElement("div");
+      card.className = "review-card";
+      const rating = Math.max(1, Math.min(5, r.rating || 5));
+      const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
+      card.innerHTML = `
+        <p class="review-stars">${stars}</p>
+        <p class="review-text">${localized(r, "text")}</p>
+        <p class="review-author">${r.author || ""}</p>
+      `;
+      grid.appendChild(card);
+    });
+    emptyMsg.classList.add("hidden");
+    googleLink.classList.add("hidden");
+  } else if (CONFIG.googleReviewsUrl) {
+    googleLink.href = CONFIG.googleReviewsUrl;
+    googleLink.classList.remove("hidden");
+    emptyMsg.classList.add("hidden");
+  } else {
+    emptyMsg.classList.remove("hidden");
+    googleLink.classList.add("hidden");
+  }
 }
 
 /* ---------- Opening hours ---------- */
@@ -861,7 +1053,19 @@ async function refreshTimeGrid() {
   }
 }
 
-/* ---------- Booking submission ---------- */
+/* ---------- Booking summary + submission ---------- */
+
+function renderSummary() {
+  document.getElementById("summary-services").textContent = state.services.map(s => localized(s, "name")).join(", ");
+  const barberObj = CONFIG.barbers.find(b => b.id === state.barber);
+  const barberLabel = state.barber === "any"
+    ? (currentLang === "en" ? "No preference" : "Pa preferencë")
+    : (barberObj ? barberObj.name : state.barber);
+  document.getElementById("summary-barber").textContent = barberLabel;
+  document.getElementById("summary-date").textContent = state.date;
+  document.getElementById("summary-time").textContent = state.time;
+  document.getElementById("summary-price").textContent = totalPriceText(state.services);
+}
 
 function wireBookingButton() {
   document.getElementById("submit-booking").addEventListener("click", submitBooking);

@@ -3,11 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Unique Barber — Elbasan</title>
-<meta name="description" content="Unique Barber, Elbasan — berber shop modern. Prerje, fade dhe rregullim mjekre. Rezervo online, paguaj në barbërhanë.">
+<title>Unique Barber Elbasan — Berber Shop Premium | Prerje Flokësh &amp; Mjekre</title>
+<meta name="description" content="Unique Barber, Elbasan — berber shop premium në Rrugën Lef Nosi që nga 2009. Prerje flokësh, stilim mjekre, trajtime fytyre. Rezervo online, paguaj në barbërhanë.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<!--
+  Structured data: kept in sync manually with config.json's address/phone/hours
+  (search engines need this present in the raw HTML, not injected by JS later).
+  If you change the address, phone, or hours in config.json, update this too.
+-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BarberShop",
+  "name": "Unique Barber",
+  "image": "",
+  "telephone": "+355698491714",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Rruga Lef Nosi",
+    "addressLocality": "Elbasan",
+    "postalCode": "3001",
+    "addressCountry": "AL"
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Thursday","Friday","Saturday","Sunday"], "opens": "09:00", "closes": "14:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Thursday","Friday","Saturday","Sunday"], "opens": "16:00", "closes": "21:00" }
+  ],
+  "sameAs": ["https://instagram.com/uniqebarber24"]
+}
+</script>
 </head>
 <body>
 
@@ -20,234 +46,295 @@
 </div>
 
 <header class="site-header">
-  <div class="container header-inner">
-    <button type="button" class="brand" data-goto="home">
+  <div class="container-wide header-inner">
+    <a href="#top" class="brand">
       <span class="brand-mark">✂️</span>
       <span class="brand-name">Unique <em>Barber</em></span>
-    </button>
+    </a>
+
+    <nav class="main-nav">
+      <a href="#services" data-i18n="navServices">Shërbimet</a>
+      <a href="#pricing" data-i18n="navPricing">Çmimorja</a>
+      <a href="#gallery" data-i18n="navGallery">Punët Tona</a>
+      <a href="#products" data-i18n="navProducts">Produktet</a>
+      <a href="#about" data-i18n="navAbout">Rreth Nesh</a>
+    </nav>
+
     <div class="header-actions">
       <button type="button" id="lang-toggle" class="lang-toggle" aria-label="Change language">SQ</button>
       <a id="header-call" href="tel:+355000000000" class="btn btn-ghost btn-icon" aria-label="Telefono">📞</a>
+      <button type="button" class="btn btn-primary btn-small nav-cta" data-goto="wizard-services" data-i18n="bookNow">Rezervo Tani</button>
+      <button type="button" id="hamburger-btn" class="hamburger-btn" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
   <div class="barber-pole"></div>
+
+  <nav id="mobile-nav" class="mobile-nav">
+    <a href="#services" data-i18n="navServices">Shërbimet</a>
+    <a href="#pricing" data-i18n="navPricing">Çmimorja</a>
+    <a href="#gallery" data-i18n="navGallery">Punët Tona</a>
+    <a href="#products" data-i18n="navProducts">Produktet</a>
+    <a href="#about" data-i18n="navAbout">Rreth Nesh</a>
+    <button type="button" class="btn btn-primary btn-block" data-goto="wizard-services" data-i18n="bookNow">Rezervo Tani</button>
+  </nav>
 </header>
 
-<main class="container app-container">
+<main class="app-container">
 
-  <!-- HOME -->
+  <!-- HOME: scrolling content page -->
   <section class="screen active" data-screen="home">
-    <div class="home-hero">
-      <p class="hero-badge" data-i18n="heroBadge">Përsosmëri · Stil · Detaje</p>
-      <p class="eyebrow">Elbasan · Rruga Lef Nosi</p>
-      <h1 data-i18n-html="heroTitle">Stili Fillon<br>Këtu.</h1>
-      <p class="home-sub" data-i18n="heroSub">Lineup të përsosur, trajtime fytyre të kujdesshme dhe produkte premium — nga berberët më me përvojë në Elbasan.</p>
-      <div class="hero-hours">
-        <span class="dot"></span>
-        <span id="open-status">Duke kontrolluar orarin…</span>
-      </div>
-      <button type="button" class="btn btn-primary btn-large" data-goto="wizard-services" data-i18n="bookNow">Rezervo Tani</button>
-      <a id="google-reviews-link" href="#" target="_blank" rel="noopener" class="google-reviews-link hidden" data-i18n="googleReviews">★★★★★ Shiko vlerësimet tona në Google</a>
-    </div>
 
-    <h2 class="highlights-title" data-i18n="whyUsTitle">Pse Ne?</h2>
-    <div id="highlights-grid" class="highlights-grid"></div>
-
-    <div class="price-boards">
-      <div class="price-board">
-        <h3 class="price-board-title" data-i18n="pricingServicesHeader">Shërbimet</h3>
-        <div id="home-price-board-services"></div>
-      </div>
-      <div class="price-board">
-        <h3 class="price-board-title" data-i18n="pricingProductsHeader">Produktet</h3>
-        <div id="home-price-board-products"></div>
+    <!-- HERO -->
+    <div id="top" class="hero-section">
+      <div class="container-wide">
+        <p class="hero-badge" data-i18n="heroBadge">Përsosmëri · Stil · Detaje</p>
+        <p class="eyebrow">Elbasan · Rruga Lef Nosi</p>
+        <h1 data-i18n-html="heroTitle">Stili Fillon<br>Këtu.</h1>
+        <p class="home-sub" data-i18n="heroSub">Prerje flokësh profesionale, stilim mjekre dhe trajtime fytyre premium — nga berberët më me përvojë në Elbasan.</p>
+        <div class="hero-hours">
+          <span class="dot"></span>
+          <span id="open-status">Duke kontrolluar orarin…</span>
+        </div>
+        <div class="hero-actions">
+          <button type="button" class="btn btn-primary btn-large" data-goto="wizard-services" data-i18n="bookNow">Rezervo Tani</button>
+          <a href="#services" class="btn btn-ghost btn-large" data-i18n="seeServicesBtn">Shiko Shërbimet</a>
+        </div>
+        <a id="google-reviews-link" href="#" target="_blank" rel="noopener" class="google-reviews-link hidden" data-i18n="googleReviews">★★★★★ Shiko vlerësimet tona në Google</a>
       </div>
     </div>
 
-    <div class="home-tiles">
-      <button type="button" class="home-tile" data-goto="pricing">
-        <span class="home-tile-icon">🏷️</span>
-        <span data-i18n="tilePricing">Çmimorja</span>
-      </button>
-      <button type="button" class="home-tile" data-goto="products">
-        <span class="home-tile-icon">🧴</span>
-        <span data-i18n="tileProducts">Produktet</span>
-      </button>
-      <button type="button" class="home-tile" data-goto="work">
-        <span class="home-tile-icon">✂️</span>
-        <span data-i18n="tileWork">Punët Tona</span>
-      </button>
-      <button type="button" class="home-tile" data-goto="about">
-        <span class="home-tile-icon">📍</span>
-        <span data-i18n="tileAbout">Rreth Nesh</span>
-      </button>
+    <!-- WHY US -->
+    <div class="section-block">
+      <div class="container-wide">
+        <h2 class="section-heading" data-i18n="whyUsTitle">Pse Ne?</h2>
+        <div id="highlights-grid" class="highlights-grid"></div>
+      </div>
     </div>
 
-    <button type="button" class="text-link" data-goto="cancel" data-i18n="cancelLink">Anulo një rezervim ekzistues</button>
+    <!-- SERVICES -->
+    <div id="services" class="section-block alt-bg">
+      <div class="container-wide">
+        <h2 class="section-heading" data-i18n="navServices">Shërbimet</h2>
+        <p class="section-sub" data-i18n="chooseServicesSub">Zgjidh një ose më shumë.</p>
+        <div id="services-cards-grid" class="services-cards-grid"></div>
+      </div>
+    </div>
+
+    <!-- BARBERS -->
+    <div id="barbers" class="section-block">
+      <div class="container-wide">
+        <h2 class="section-heading" data-i18n="ourBarbersTitle">Berberët Tanë</h2>
+        <div id="barbers-grid" class="barbers-grid"></div>
+      </div>
+    </div>
+
+    <!-- GALLERY -->
+    <div id="gallery" class="section-block alt-bg">
+      <div class="container-wide">
+        <h2 class="section-heading" data-i18n="navGallery">Punët Tona</h2>
+        <p class="section-sub gallery-placeholder-note" id="work-note" data-i18n="workPhotosNote">
+          Foto nga klientët tanë do të shtohen këtu së shpejti.
+        </p>
+        <div id="work-grid" class="gallery-grid"></div>
+      </div>
+    </div>
+
+    <!-- PRICING -->
+    <div id="pricing" class="section-block">
+      <div class="container-wide">
+        <h2 class="section-heading" data-i18n="navPricing">Çmimorja</h2>
+        <div class="menu-list">
+          <h3 class="menu-list-heading" data-i18n="pricingServicesHeader">Shërbimet</h3>
+          <div id="pricing-services-list"></div>
+        </div>
+        <div class="menu-list">
+          <h3 class="menu-list-heading" data-i18n="pricingProductsHeader">Produktet</h3>
+          <div id="pricing-products-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div id="products" class="section-block alt-bg">
+      <div class="container-wide">
+        <h2 class="section-heading" data-i18n="navProducts">Produktet</h2>
+        <p class="section-sub" data-i18n="productsSub">Gjenden në barbërhanë — nuk rezervohen online.</p>
+        <div id="products-grid" class="services-cards-grid"></div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div id="about" class="section-block">
+      <div class="container-wide">
+        <h2 class="section-heading" data-i18n="navAbout">Rreth Nesh</h2>
+        <h3 class="story-title" data-i18n="storyTitle">Historia Jonë</h3>
+        <p id="story-text" class="story-text"></p>
+
+        <p class="section-sub gallery-placeholder-note" id="gallery-note" data-i18n="shopPhotosNote">
+          Foto të barbërhanës do të shtohen këtu së shpejti.
+        </p>
+        <div id="gallery-grid" class="gallery-grid"></div>
+
+        <div class="about-info">
+          <div class="about-col">
+            <h4 data-i18n="contactLabel">Kontakt</h4>
+            <p id="footer-address">Rruga Lef Nosi, Elbasan 3001</p>
+            <p><a id="footer-phone" href="tel:+355000000000">069 000 0000</a></p>
+            <a id="whatsapp-link" href="#" target="_blank" rel="noopener" class="whatsapp-link hidden">💬 WhatsApp</a>
+          </div>
+          <div class="about-col">
+            <h4 data-i18n="hoursLabel">Orari</h4>
+            <p data-i18n="hoursLine1">E Hënë, Martë, Enjte – Diel: 09:00 – 21:00</p>
+            <p data-i18n="hoursLine2">Pushim dreke: 14:00 – 16:00</p>
+            <p data-i18n="hoursLine3">E Mërkurë: Mbyllur</p>
+          </div>
+          <div class="about-col">
+            <h4 data-i18n="followUsLabel">Na Ndiqni</h4>
+            <div id="social-links" class="social-links"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div id="reviews" class="section-block alt-bg">
+      <div class="container-wide">
+        <h2 class="section-heading" data-i18n="reviewsTitle">Çfarë Thonë Klientët</h2>
+        <div id="reviews-grid" class="reviews-grid"></div>
+        <p id="reviews-empty" class="section-sub hidden" data-i18n="reviewsEmpty">Së shpejti do të shtojmë vlerësimet tona këtu.</p>
+        <a id="reviews-google-link" href="#" target="_blank" rel="noopener" class="google-reviews-link hidden" data-i18n="googleReviews">★★★★★ Shiko vlerësimet tona në Google</a>
+      </div>
+    </div>
+
+    <button type="button" class="text-link cancel-link-block" data-goto="cancel" data-i18n="cancelLink">Anulo një rezervim ekzistues</button>
+    <button type="button" id="barber-mode-btn" class="text-link cancel-link-block" data-i18n="barberModeLink">Jam berber — dua të bllokoj një orë</button>
+
   </section>
 
   <!-- WIZARD STEP 1: SERVICES -->
   <section class="screen" data-screen="wizard-services">
-    <div class="screen-head">
-      <button type="button" class="back-btn" data-back aria-label="Kthehu">←</button>
-      <span class="wizard-progress" data-i18n="step1of4">Hapi 1 nga 4</span>
+    <div class="container">
+      <div class="screen-head">
+        <button type="button" class="back-btn" data-back aria-label="Kthehu">←</button>
+        <span class="wizard-progress" data-i18n="step1of5">Hapi 1 nga 5</span>
+      </div>
+      <h2 class="screen-title" data-i18n="chooseServices">Zgjidh Shërbimet</h2>
+      <p class="screen-sub" data-i18n="chooseServicesSub">Zgjidh një ose më shumë.</p>
+      <div id="service-options" class="option-grid-wizard"></div>
+      <p id="service-total" class="service-total"></p>
+      <button type="button" id="services-next" class="btn btn-primary btn-block" data-goto="wizard-barber" data-manual data-i18n="continueBtn">Vazhdo</button>
     </div>
-    <h2 class="screen-title" data-i18n="chooseServices">Zgjidh Shërbimet</h2>
-    <p class="screen-sub" data-i18n="chooseServicesSub">Zgjidh një ose më shumë.</p>
-    <div id="service-options" class="option-grid-wizard"></div>
-    <p id="service-total" class="service-total"></p>
-    <button type="button" id="services-next" class="btn btn-primary btn-block" data-goto="wizard-barber" data-manual data-i18n="continueBtn">Vazhdo</button>
   </section>
 
   <!-- WIZARD STEP 2: BARBER -->
   <section class="screen" data-screen="wizard-barber">
-    <div class="screen-head">
-      <button type="button" class="back-btn" data-back aria-label="Kthehu">←</button>
-      <span class="wizard-progress" id="barber-progress">Hapi 2 nga 4</span>
+    <div class="container">
+      <div class="screen-head">
+        <button type="button" class="back-btn" data-back aria-label="Kthehu">←</button>
+        <span class="wizard-progress" id="barber-progress">Hapi 2 nga 5</span>
+      </div>
+      <h2 class="screen-title" id="barber-screen-title">Zgjidh Berberin</h2>
+      <label class="child-check" id="under-10-wrap">
+        <input type="checkbox" id="under-10-check">
+        <span data-i18n="under10Label">Klienti është nën 10 vjeç</span> <span class="step-hint" data-i18n="under10Hint">(caktohet automatikisht te Endri)</span>
+      </label>
+      <div id="barber-options" class="option-grid-wizard"></div>
+      <p id="barber-error" class="error-text hidden"></p>
+      <button type="button" id="barber-next" class="btn btn-primary btn-block" data-goto="wizard-datetime" data-manual data-i18n="continueBtn">Vazhdo</button>
     </div>
-    <h2 class="screen-title" id="barber-screen-title">Zgjidh Berberin</h2>
-    <label class="child-check" id="under-10-wrap">
-      <input type="checkbox" id="under-10-check">
-      <span data-i18n="under10Label">Klienti është nën 10 vjeç</span> <span class="step-hint" data-i18n="under10Hint">(caktohet automatikisht te Endri)</span>
-    </label>
-    <div id="barber-options" class="option-grid-wizard"></div>
-    <p id="barber-error" class="error-text hidden"></p>
-    <button type="button" id="barber-next" class="btn btn-primary btn-block" data-goto="wizard-datetime" data-manual data-i18n="continueBtn">Vazhdo</button>
   </section>
 
   <!-- WIZARD STEP 3: DATE & TIME -->
   <section class="screen" data-screen="wizard-datetime">
-    <div class="screen-head">
-      <button type="button" class="back-btn" data-back aria-label="Kthehu">←</button>
-      <span class="wizard-progress" id="datetime-progress">Hapi 3 nga 4</span>
+    <div class="container">
+      <div class="screen-head">
+        <button type="button" class="back-btn" data-back aria-label="Kthehu">←</button>
+        <span class="wizard-progress" id="datetime-progress">Hapi 3 nga 5</span>
+      </div>
+      <h2 class="screen-title" id="datetime-screen-title">Zgjidh Datën &amp; Orën</h2>
+      <input type="date" id="booking-date" class="date-input">
+      <div id="time-slots" class="time-grid">
+        <p class="hint-text" data-i18n="pickDateHint">Zgjidh një datë për të parë orët e lira.</p>
+      </div>
+      <p id="datetime-error" class="error-text hidden"></p>
+      <button type="button" id="datetime-next" class="btn btn-primary btn-block hidden" data-goto="wizard-details" data-manual data-i18n="continueBtn">Vazhdo</button>
+      <button type="button" id="datetime-done" class="btn btn-primary btn-block hidden" data-goto="home" data-reset data-manual data-i18n="doneBtn">Përfundo</button>
     </div>
-    <h2 class="screen-title" id="datetime-screen-title">Zgjidh Datën &amp; Orën</h2>
-    <input type="date" id="booking-date" class="date-input">
-    <div id="time-slots" class="time-grid">
-      <p class="hint-text" data-i18n="pickDateHint">Zgjidh një datë për të parë orët e lira.</p>
-    </div>
-    <p id="datetime-error" class="error-text hidden"></p>
-    <button type="button" id="datetime-next" class="btn btn-primary btn-block hidden" data-goto="wizard-details" data-manual data-i18n="continueBtn">Vazhdo</button>
-    <button type="button" id="datetime-done" class="btn btn-primary btn-block hidden" data-goto="about" data-reset data-manual data-i18n="doneBtn">Përfundo</button>
   </section>
 
   <!-- WIZARD STEP 4: DETAILS -->
   <section class="screen" data-screen="wizard-details">
-    <div class="screen-head">
-      <button type="button" class="back-btn" data-back aria-label="Kthehu">←</button>
-      <span class="wizard-progress" data-i18n="step4of4">Hapi 4 nga 4</span>
+    <div class="container">
+      <div class="screen-head">
+        <button type="button" class="back-btn" data-back aria-label="Kthehu">←</button>
+        <span class="wizard-progress" data-i18n="step4of5">Hapi 4 nga 5</span>
+      </div>
+      <h2 class="screen-title" data-i18n="yourDetails">Të Dhënat Tuaja</h2>
+      <div class="form-col">
+        <input type="text" id="customer-name" data-i18n-placeholder="placeholderName" placeholder="Emri e Mbiemri" autocomplete="name">
+        <input type="tel" id="customer-phone" data-i18n-placeholder="placeholderPhone" placeholder="Numri i telefonit" autocomplete="tel">
+        <textarea id="customer-notes" class="notes-textarea" rows="3" data-i18n-placeholder="placeholderNotes" placeholder="Ka diçka që duhet ta dijë berberi? (p.sh. lëkurë e ndjeshme, nishane, aftësi të kufizuara, etj. — opsionale)"></textarea>
+      </div>
+      <p id="details-error" class="error-text hidden"></p>
+      <button type="button" id="details-next" class="btn btn-primary btn-block" data-i18n="reviewBookingBtn">Shiko Përmbledhjen</button>
     </div>
-    <h2 class="screen-title" data-i18n="yourDetails">Të Dhënat Tuaja</h2>
-    <div class="form-col">
-      <input type="text" id="customer-name" data-i18n-placeholder="placeholderName" placeholder="Emri e Mbiemri" autocomplete="name">
-      <input type="tel" id="customer-phone" data-i18n-placeholder="placeholderPhone" placeholder="Numri i telefonit" autocomplete="tel">
-      <textarea id="customer-notes" class="notes-textarea" rows="3" data-i18n-placeholder="placeholderNotes" placeholder="Ka diçka që duhet ta dijë berberi? (p.sh. lëkurë e ndjeshme, nishane, aftësi të kufizuara, etj. — opsionale)"></textarea>
+  </section>
+
+  <!-- WIZARD STEP 5: SUMMARY -->
+  <section class="screen" data-screen="wizard-summary">
+    <div class="container">
+      <div class="screen-head">
+        <button type="button" class="back-btn" data-back aria-label="Kthehu">←</button>
+        <span class="wizard-progress" data-i18n="step5of5">Hapi 5 nga 5</span>
+      </div>
+      <h2 class="screen-title" data-i18n="summaryTitle">Përmbledhja e Rezervimit</h2>
+      <div class="summary-card">
+        <div class="summary-row"><span data-i18n="summaryService">Shërbimi</span><span id="summary-services"></span></div>
+        <div class="summary-row"><span data-i18n="summaryBarber">Berberi</span><span id="summary-barber"></span></div>
+        <div class="summary-row"><span data-i18n="summaryDate">Data</span><span id="summary-date"></span></div>
+        <div class="summary-row"><span data-i18n="summaryTime">Ora</span><span id="summary-time"></span></div>
+        <div class="summary-row summary-row-price"><span data-i18n="summaryPrice">Çmimi</span><span id="summary-price"></span></div>
+      </div>
+      <div id="booking-feedback" class="booking-feedback" role="status"></div>
+      <button type="button" id="submit-booking" class="btn btn-primary btn-block" data-i18n="confirmBooking">Konfirmo Rezervimin</button>
+      <p class="pay-note" data-i18n="payNote">💵 Pagesa bëhet në barbërhanë, kur vjen për termin.</p>
     </div>
-    <div id="booking-feedback" class="booking-feedback" role="status"></div>
-    <button type="button" id="submit-booking" class="btn btn-primary btn-block" data-i18n="confirmBooking">Konfirmo Rezervimin</button>
-    <p class="pay-note" data-i18n="payNote">💵 Pagesa bëhet në barbërhanë, kur vjen për termin.</p>
   </section>
 
   <!-- WIZARD: CONFIRMATION -->
   <section class="screen" data-screen="wizard-confirm">
-    <div class="confirm-content">
-      <span class="confirm-mark">✓</span>
-      <h2 class="screen-title" data-i18n="bookingConfirmedTitle">Rezervimi u Konfirmua</h2>
-      <p id="confirm-message" class="screen-sub"></p>
-      <button type="button" id="confirm-home-btn" class="btn btn-primary btn-block" data-goto="home" data-reset data-manual data-i18n="backHome">Kthehu në Faqen Kryesore</button>
-    </div>
-  </section>
-
-  <!-- PRICING (read-only price list) -->
-  <section class="screen" data-screen="pricing">
-    <div class="screen-head">
-      <button type="button" class="back-btn" data-goto="home" aria-label="Kthehu">←</button>
-    </div>
-    <h2 class="screen-title" data-i18n="tilePricing">Çmimorja</h2>
-    <h3 class="price-list-heading" data-i18n="pricingServicesHeader">Shërbimet</h3>
-    <div id="pricing-services-list" class="price-list"></div>
-    <h3 class="price-list-heading" data-i18n="pricingProductsHeader">Produktet</h3>
-    <div id="pricing-products-list" class="price-list"></div>
-    <button type="button" class="btn btn-primary btn-block" data-goto="wizard-services" data-i18n="bookNow">Rezervo Tani</button>
-  </section>
-
-  <!-- PRODUCTS -->
-  <section class="screen" data-screen="products">
-    <div class="screen-head">
-      <button type="button" class="back-btn" data-goto="home" aria-label="Kthehu">←</button>
-    </div>
-    <h2 class="screen-title" data-i18n="tileProducts">Produktet</h2>
-    <p class="screen-sub" data-i18n="productsSub">Gjenden në barbërhanë — nuk rezervohen online.</p>
-    <div id="products-grid" class="services-grid"></div>
-    <button type="button" class="btn btn-primary btn-block" data-goto="wizard-services" data-i18n="bookNow">Rezervo Tani</button>
-  </section>
-
-  <!-- WORK GALLERY -->
-  <section class="screen" data-screen="work">
-    <div class="screen-head">
-      <button type="button" class="back-btn" data-goto="home" aria-label="Kthehu">←</button>
-    </div>
-    <h2 class="screen-title" data-i18n="tileWork">Punët Tona</h2>
-    <p class="screen-sub gallery-placeholder-note" id="work-note" data-i18n="workPhotosNote">
-      Foto nga klientët tanë do të shtohen këtu së shpejti.
-    </p>
-    <div id="work-grid" class="gallery-grid"></div>
-  </section>
-
-  <!-- ABOUT (story, barbers, shop photos, contact, hours) -->
-  <section class="screen" data-screen="about">
-    <div class="screen-head">
-      <button type="button" class="back-btn" data-goto="home" aria-label="Kthehu">←</button>
-    </div>
-    <h2 class="screen-title" data-i18n="tileAbout">Rreth Nesh</h2>
-
-    <h3 class="story-title" data-i18n="storyTitle">Historia Jonë</h3>
-    <p id="story-text" class="story-text"></p>
-
-    <div id="barbers-grid" class="barbers-grid"></div>
-
-    <p class="screen-sub gallery-placeholder-note" id="gallery-note" data-i18n="shopPhotosNote">
-      Foto të barbërhanës do të shtohen këtu së shpejti.
-    </p>
-    <div id="gallery-grid" class="gallery-grid"></div>
-
-    <div class="about-info">
-      <div class="about-col">
-        <h4 data-i18n="contactLabel">Kontakt</h4>
-        <p id="footer-address">Rruga Lef Nosi, Elbasan 3001</p>
-        <p><a id="footer-phone" href="tel:+355000000000">069 000 0000</a></p>
-      </div>
-      <div class="about-col">
-        <h4 data-i18n="hoursLabel">Orari</h4>
-        <p data-i18n="hoursLine1">E Hënë, Martë, Enjte – Diel: 09:00 – 21:00</p>
-        <p data-i18n="hoursLine2">Pushim dreke: 14:00 – 16:00</p>
-        <p data-i18n="hoursLine3">E Mërkurë: Mbyllur</p>
-      </div>
-      <div class="about-col">
-        <h4 data-i18n="followUsLabel">Na Ndiqni</h4>
-        <div id="social-links" class="social-links"></div>
+    <div class="container">
+      <div class="confirm-content">
+        <span class="confirm-mark">✓</span>
+        <h2 class="screen-title" data-i18n="bookingConfirmedTitle">Rezervimi u Konfirmua</h2>
+        <p id="confirm-message" class="screen-sub"></p>
+        <button type="button" id="confirm-home-btn" class="btn btn-primary btn-block" data-goto="home" data-reset data-manual data-i18n="backHome">Kthehu në Faqen Kryesore</button>
       </div>
     </div>
-
-    <button type="button" id="barber-mode-btn" class="text-link" data-i18n="barberModeLink">Jam berber — dua të bllokoj një orë</button>
   </section>
 
   <!-- CANCEL BOOKING -->
   <section class="screen" data-screen="cancel">
-    <div class="screen-head">
-      <button type="button" class="back-btn" data-goto="home" aria-label="Kthehu">←</button>
+    <div class="container">
+      <div class="screen-head">
+        <button type="button" class="back-btn" data-goto="home" aria-label="Kthehu">←</button>
+      </div>
+      <h2 class="screen-title" data-i18n="cancelTitle">Anulo Rezervimin</h2>
+      <p class="screen-sub" data-i18n="cancelSub">Vendos datën dhe numrin e telefonit që përdore kur rezervove.</p>
+      <div class="form-col">
+        <input type="date" id="cancel-date" class="date-input">
+        <input type="tel" id="cancel-phone" data-i18n-placeholder="placeholderPhone" placeholder="Numri i telefonit" autocomplete="tel">
+      </div>
+      <button type="button" id="cancel-search-btn" class="btn btn-primary btn-block" data-i18n="searchBooking">Kërko Rezervimin</button>
+      <div id="cancel-results" class="cancel-results"></div>
     </div>
-    <h2 class="screen-title" data-i18n="cancelTitle">Anulo Rezervimin</h2>
-    <p class="screen-sub" data-i18n="cancelSub">Vendos datën dhe numrin e telefonit që përdore kur rezervove.</p>
-    <div class="form-col">
-      <input type="date" id="cancel-date" class="date-input">
-      <input type="tel" id="cancel-phone" data-i18n-placeholder="placeholderPhone" placeholder="Numri i telefonit" autocomplete="tel">
-    </div>
-    <button type="button" id="cancel-search-btn" class="btn btn-primary btn-block" data-i18n="searchBooking">Kërko Rezervimin</button>
-    <div id="cancel-results" class="cancel-results"></div>
   </section>
 
 </main>
+
+<button type="button" id="sticky-cta" class="sticky-cta hidden" data-goto="wizard-services" data-i18n="bookNow">Rezervo Tani</button>
 
 <div id="barber-pin-gate" class="barber-pin-gate hidden">
   <div class="barber-pin-card">

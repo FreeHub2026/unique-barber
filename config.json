@@ -3,6 +3,7 @@
 
   "phoneDisplay": "069 849 1714",
   "phoneIntl": "355698491714",
+  "whatsappNumber": "",
 
   "address": "Rruga Lef Nosi, Elbasan 3001",
 
@@ -20,8 +21,8 @@
   },
 
   "barbers": [
-    { "id": "endri", "name": "Endri", "phone": "" },
-    { "id": "aldo", "name": "Aldo", "phone": "" }
+    { "id": "endri", "name": "Endri", "phone": "", "specialty": "", "specialtyEn": "" },
+    { "id": "aldo", "name": "Aldo", "phone": "", "specialty": "", "specialtyEn": "" }
   ],
 
   "highlights": [
@@ -32,20 +33,20 @@
   ],
 
   "services": [
-    { "id": "qethje", "name": "Qethje", "nameEn": "Haircut", "price": 400, "duration": 30 },
-    { "id": "qethje-0-forte", "name": "Qethje me 0 të fortë", "nameEn": "Buzz Cut (0 Guard)", "price": 500, "duration": 30 },
-    { "id": "stilim-mjekre", "name": "Stilim Mjekre", "nameEn": "Beard Styling", "price": 200, "duration": 2 },
-    { "id": "rruajtje", "name": "Rruajtje", "nameEn": "Shave", "price": 100, "duration": 2 },
-    { "id": "larje-koke", "name": "Larje Koke", "nameEn": "Hair Wash", "price": 100, "duration": 2 },
-    { "id": "dyll", "name": "Dyll", "nameEn": "Wax", "price": 100, "duration": 2 },
-    { "id": "trajtim-fytyre", "name": "Trajtim Fytyre", "nameEn": "Face Treatment", "price": "1500-2000", "duration": 10 }
+    { "id": "qethje", "name": "Qethje", "nameEn": "Haircut", "description": "Prerje klasike, e përshtatur për stilin tënd.", "descriptionEn": "A classic cut, tailored to your style.", "price": 400, "duration": 30 },
+    { "id": "qethje-0-forte", "name": "Qethje me 0 të fortë", "nameEn": "Buzz Cut (0 Guard)", "description": "Prerje e shkurtër dhe e pastër me makinë.", "descriptionEn": "A short, clean cut with the clippers.", "price": 500, "duration": 30 },
+    { "id": "stilim-mjekre", "name": "Stilim Mjekre", "nameEn": "Beard Styling", "description": "Formësim i mjekrës me precizion.", "descriptionEn": "Precise beard shaping.", "price": 200, "duration": 2 },
+    { "id": "rruajtje", "name": "Rruajtje", "nameEn": "Shave", "description": "Rrojë e pastër dhe e kujdesshme.", "descriptionEn": "A clean, careful shave.", "price": 100, "duration": 2 },
+    { "id": "larje-koke", "name": "Larje Koke", "nameEn": "Hair Wash", "description": "Larje flokësh para prerjes.", "descriptionEn": "Hair wash before your cut.", "price": 100, "duration": 2 },
+    { "id": "dyll", "name": "Dyll", "nameEn": "Wax", "description": "Heqje qimesh me dyll.", "descriptionEn": "Wax hair removal.", "price": 100, "duration": 2 },
+    { "id": "trajtim-fytyre", "name": "Trajtim Fytyre", "nameEn": "Face Treatment", "description": "Kujdes i thelluar për lëkurën e fytyrës.", "descriptionEn": "Deep care for your facial skin.", "price": "1500-2000", "duration": 10 }
   ],
 
   "products": [
-    { "id": "uji", "name": "Uji", "nameEn": "Water", "price": 50 },
-    { "id": "kafe", "name": "Kafe", "nameEn": "Coffee", "price": 50 },
-    { "id": "xhel", "name": "Xhelë", "nameEn": "Gel", "price": "300-500" },
-    { "id": "kreher", "name": "Kreher", "nameEn": "Comb", "price": "100-300" }
+    { "id": "uji", "name": "Uji", "nameEn": "Water", "description": "Ujë i ftohtë gjatë pritjes.", "descriptionEn": "Cold water while you wait.", "price": 50, "image": "" },
+    { "id": "kafe", "name": "Kafe", "nameEn": "Coffee", "description": "Kafe e freskët në lokal.", "descriptionEn": "Fresh coffee at the shop.", "price": 50, "image": "" },
+    { "id": "xhel", "name": "Xhelë", "nameEn": "Gel", "description": "Xhel flokësh cilësie premium.", "descriptionEn": "Premium quality hair gel.", "price": "300-500", "image": "" },
+    { "id": "kreher", "name": "Kreher", "nameEn": "Comb", "description": "Kreher profesional berberie.", "descriptionEn": "Professional barber comb.", "price": "100-300", "image": "" }
   ],
 
   "hours": {
@@ -59,6 +60,8 @@
 
   "galleryPhotos": [],
   "workPhotos": [],
+  "heroPhoto": "",
 
-  "googleReviewsUrl": ""
+  "googleReviewsUrl": "",
+  "reviews": []
 }
