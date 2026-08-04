@@ -43,7 +43,8 @@ const I18N = {
     barberScreenTitleBlocking: "Për Cilin Berber?",
     barberProgressBlocking: "Bllokim Ore",
     datetimeScreenTitleBooking: "Zgjidh Datën & Orën",
-    datetimeScreenTitleBlocking: "Blloko / Zhblloko Orë",
+    datetimeScreenTitleBlocking: "Orari Im",
+    scheduleLegend: "🟡 Rezervuar · 🔴 Bllokuar prej teje · E lirë = prek për ta bllokuar",
     pickDateHint: "Zgjidh një datë për të parë orët e lira.",
     pickBarberHint: "Zgjidh një berber për të parë orët e lira.",
     closedWednesdayHint: "Të mërkurën jemi mbyllur — zgjidh një ditë tjetër.",
@@ -150,7 +151,8 @@ const I18N = {
     barberScreenTitleBlocking: "Which Barber?",
     barberProgressBlocking: "Blocking Time",
     datetimeScreenTitleBooking: "Choose Date & Time",
-    datetimeScreenTitleBlocking: "Block / Unblock Time",
+    datetimeScreenTitleBlocking: "My Schedule",
+    scheduleLegend: "🟡 Booked · 🔴 Blocked by you · Empty = tap to block",
     pickDateHint: "Pick a date to see available times.",
     pickBarberHint: "Pick a barber to see available times.",
     closedWednesdayHint: "We're closed on Wednesdays — pick another day.",
@@ -493,12 +495,15 @@ function onScreenEnter(name) {
   if (name === "wizard-datetime") {
     const title = document.getElementById("datetime-screen-title");
     const progress = document.getElementById("datetime-progress");
+    const legend = document.getElementById("schedule-legend");
     if (state.barberMode) {
       title.textContent = t("datetimeScreenTitleBlocking");
       progress.textContent = t("barberProgressBlocking");
+      legend.classList.remove("hidden");
     } else {
       title.textContent = t("datetimeScreenTitleBooking");
       progress.textContent = t("step3of5");
+      legend.classList.add("hidden");
     }
     refreshTimeGrid();
   }
@@ -1002,21 +1007,31 @@ async function refreshTimeGrid() {
     wrap.innerHTML = `<p class="hint-text">${t("pickBarberHint")}</p>`;
     return;
   }
+  if (state.barberMode && (!state.barber || state.barber === "any")) {
+    wrap.innerHTML = `<p class="hint-text">${t("pickSpecificBarberError")}</p>`;
+    return;
+  }
   if (new Date(`${state.date}T00:00:00`).getDay() === CONFIG.hours.closedWeekday) {
     wrap.innerHTML = `<p class="hint-text">${t("closedWednesdayHint")}</p>`;
     return;
   }
 
   wrap.innerHTML = `<p class="hint-text">${t("loadingHint")}</p>`;
+
+  if (state.barberMode) {
+    await renderBarberDaySlots(wrap);
+  } else {
+    await renderCustomerDaySlots(wrap);
+  }
+}
+
+async function renderCustomerDaySlots(wrap) {
   const availability = await fetchAvailability(state.date);
   state.availability = availability;
-
   const slots = generateSlots();
   wrap.innerHTML = "";
 
-  const barbersToCheck = state.barberMode
-    ? CONFIG.barbers.map(b => b.id)
-    : (state.barber === "any" ? CONFIG.barbers.map(b => b.id) : [state.barber]);
+  const barbersToCheck = state.barber === "any" ? CONFIG.barbers.map(b => b.id) : [state.barber];
 
   slots.forEach(slot => {
     const btn = document.createElement("button");
@@ -1025,37 +1040,106 @@ async function refreshTimeGrid() {
     btn.textContent = slot;
     btn.dataset.time = slot;
 
-    if (state.barberMode) {
-      btn.classList.add("blocked-mode");
-    }
-
     const takenFor = barbersToCheck.filter(bid => (availability[bid] || []).includes(slot));
     const fullyTaken = barbersToCheck.length > 0 && takenFor.length === barbersToCheck.length;
 
-    if (state.barberMode) {
-      const isBlocked = (availability[state.barber] || []).includes(slot);
-      if (isBlocked) btn.classList.add("blocked-slot");
-      btn.addEventListener("click", () => handleBlockToggle(slot, isBlocked));
+    if (fullyTaken) {
+      btn.classList.add("taken");
+      btn.disabled = true;
     } else {
-      if (fullyTaken) {
-        btn.classList.add("taken");
-        btn.disabled = true;
-      } else {
-        if (state.time === slot) btn.classList.add("selected");
-        btn.addEventListener("click", () => {
-          state.time = slot;
-          [...wrap.children].forEach(c => c.classList.remove("selected"));
-          btn.classList.add("selected");
-          document.getElementById("datetime-error").classList.add("hidden");
-        });
-      }
+      if (state.time === slot) btn.classList.add("selected");
+      btn.addEventListener("click", () => {
+        state.time = slot;
+        [...wrap.children].forEach(c => c.classList.remove("selected"));
+        btn.classList.add("selected");
+        document.getElementById("datetime-error").classList.add("hidden");
+      });
     }
     wrap.appendChild(btn);
   });
 
-  if (!slots.length) {
-    wrap.innerHTML = `<p class="hint-text">${t("noSlotsHint")}</p>`;
+  if (!slots.length) wrap.innerHTML = `<p class="hint-text">${t("noSlotsHint")}</p>`;
+}
+
+// A barber's own day: shows real bookings (customer name, services, notes —
+// read-only, can't be removed from here, that's what cancellation is for)
+// alongside free/blocked slots they can toggle themselves.
+function entryOccupiedSlots(entry) {
+  const slotMinutes = CONFIG.hours.slotMinutes;
+  let duration = slotMinutes;
+  if (entry.type === "booking") {
+    duration = (entry.serviceIds || []).reduce((sum, id) => {
+      const svc = CONFIG.services.find(s => s.id === id);
+      return sum + (svc ? svc.duration : slotMinutes);
+    }, 0) || slotMinutes;
   }
+  const start = timeToMinutes(entry.time);
+  const slots = [];
+  for (let t = start; t < start + duration; t += slotMinutes) slots.push(minutesToTime(t));
+  return slots;
+}
+
+async function renderBarberDaySlots(wrap) {
+  let data;
+  try {
+    const res = await fetch("/api/schedule", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ date: state.date, barber: state.barber, pin: state.pin })
+    });
+    if (res.status === 401) {
+      exitBarberMode();
+      document.getElementById("barber-pin-error").classList.remove("hidden");
+      document.getElementById("barber-pin-gate").classList.remove("hidden");
+      wrap.innerHTML = "";
+      return;
+    }
+    data = await res.json();
+    if (!res.ok) {
+      wrap.innerHTML = `<p class="hint-text">${data.error || t("genericErrorShort")}</p>`;
+      return;
+    }
+  } catch (e) {
+    console.error(e);
+    wrap.innerHTML = `<p class="hint-text">${t("genericError")}</p>`;
+    return;
+  }
+
+  const occupancy = {};
+  (data.entries || []).forEach(entry => {
+    entryOccupiedSlots(entry).forEach(slotTime => { occupancy[slotTime] = entry; });
+  });
+
+  const slots = generateSlots();
+  wrap.innerHTML = "";
+
+  slots.forEach(slot => {
+    const occ = occupancy[slot];
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "time-slot blocked-mode";
+    btn.dataset.time = slot;
+
+    if (occ && occ.type === "booking") {
+      btn.classList.add("booked-slot");
+      btn.disabled = true;
+      const serviceNames = (occ.serviceIds || [])
+        .map(id => { const s = CONFIG.services.find(sv => sv.id === id); return s ? localized(s, "name") : id; })
+        .join(", ");
+      btn.title = `${occ.customerName} — ${serviceNames}${occ.customerNotes ? " — " + occ.customerNotes : ""}`;
+      btn.innerHTML = `<span class="slot-time">${slot}</span><span class="slot-customer">${occ.customerName}</span>`;
+    } else if (occ && occ.type === "block") {
+      btn.classList.add("blocked-slot");
+      btn.textContent = slot;
+      btn.addEventListener("click", () => handleBlockToggle(slot, true));
+    } else {
+      btn.textContent = slot;
+      btn.addEventListener("click", () => handleBlockToggle(slot, false));
+    }
+    wrap.appendChild(btn);
+  });
+
+  if (!slots.length) wrap.innerHTML = `<p class="hint-text">${t("noSlotsHint")}</p>`;
 }
 
 /* ---------- Booking summary + submission ---------- */

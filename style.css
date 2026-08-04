@@ -547,6 +547,26 @@ a { color: inherit; text-decoration: none; }
   text-decoration: none;
   border-color: var(--red);
 }
+.time-slot.booked-slot {
+  opacity: 1;
+  background: rgba(201,162,39,.16);
+  border-color: var(--gold);
+  cursor: not-allowed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 4px;
+}
+.slot-time { font-weight: 600; font-variant-numeric: tabular-nums; }
+.slot-customer {
+  font-size: 10px;
+  color: var(--gold-light);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 /* ---------- Forms ---------- */
 .form-row { display: flex; gap: 10px; flex-wrap: wrap; }
