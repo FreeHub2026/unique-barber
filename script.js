@@ -71,6 +71,7 @@ const I18N = {
     storyTitle: "Historia Jonë",
     shopPhotosNote: "Foto të barbërhanës do të shtohen këtu së shpejti.",
     contactLabel: "Kontakt",
+    getDirections: "📍 Shiko në Hartë",
     hoursLabel: "Orari",
     hoursLine1: "E Hënë, Martë, Enjte – Diel: 09:00 – 21:00",
     hoursLine2: "Pushim dreke: 14:00 – 16:00",
@@ -177,6 +178,7 @@ const I18N = {
     storyTitle: "Our Story",
     shopPhotosNote: "Photos of the shop coming soon.",
     contactLabel: "Contact",
+    getDirections: "📍 Get Directions",
     hoursLabel: "Hours",
     hoursLine1: "Mon, Tue, Thu – Sun: 9:00 AM – 9:00 PM",
     hoursLine2: "Lunch break: 2:00 PM – 4:00 PM",
@@ -532,6 +534,9 @@ function resetBookingState() {
 function renderStaticContent() {
   document.getElementById("footer-year").textContent = new Date().getFullYear();
   document.getElementById("footer-address").textContent = CONFIG.address;
+  if (CONFIG.googleMapsUrl) {
+    document.getElementById("maps-link").href = CONFIG.googleMapsUrl;
+  }
 
   const telHref = `tel:+${CONFIG.phoneIntl}`;
   const phoneLink = document.getElementById("footer-phone");
