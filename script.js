@@ -894,6 +894,15 @@ function renderReviews() {
 
 /* ---------- Opening hours ---------- */
 
+// Displays a stored "YYYY-MM-DD" date as "DD/MM/YYYY" (day before month —
+// the Albanian/European convention) anywhere it's shown to a customer or
+// barber. The API/KV storage format itself stays ISO ("YYYY-MM-DD"),
+// only this display text changes.
+function formatDateDisplay(dateStr) {
+  const [y, m, d] = dateStr.split("-");
+  return `${d}/${m}/${y}`;
+}
+
 function timeToMinutes(t) {
   const [h, m] = t.split(":").map(Number);
   return h * 60 + m;
@@ -1151,7 +1160,7 @@ function renderSummary() {
     ? (currentLang === "en" ? "No preference" : "Pa preferencë")
     : (barberObj ? barberObj.name : state.barber);
   document.getElementById("summary-barber").textContent = barberLabel;
-  document.getElementById("summary-date").textContent = state.date;
+  document.getElementById("summary-date").textContent = formatDateDisplay(state.date);
   document.getElementById("summary-time").textContent = state.time;
   document.getElementById("summary-price").textContent = totalPriceText(state.services);
 }
@@ -1200,7 +1209,7 @@ async function submitBooking() {
 
     const barberName = CONFIG.barbers.find(b => b.id === data.barber)?.name || data.barber;
     document.getElementById("confirm-message").textContent =
-      t("bookingConfirmedMsg", { name, barber: barberName, date: state.date, time: state.time });
+      t("bookingConfirmedMsg", { name, barber: barberName, date: formatDateDisplay(state.date), time: state.time });
     showFeedback("", "");
     goto("wizard-confirm", { reset: true });
   } catch (e) {
